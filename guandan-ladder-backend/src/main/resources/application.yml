@@ -1,0 +1,25 @@
+server:
+  port: 11111
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: @profiles.active@  # 当前激活配置，默认dev
+
+mybatis-plus:
+  mapper-locations:
+    - classpath:/mapper/*Mapper.xml
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      insert-strategy: not_empty
+      update-strategy: not_empty
+      logic-delete-value: "NOW()" # 逻辑已删除值(使用当前时间标识)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

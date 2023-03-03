@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/guandan_ladder?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&createDatabaseIfNotExist=true
+    username: root
+    password: '123456'
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>ballcat</artifactId>
+		<groupId>com.hccake</groupId>
+		<version>1.0.3</version>
+		<relativePath/>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.guandan</groupId>
+	<artifactId>guandan-ladder</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>guandan-ladder-backend</module>
+		<module>guandan-ladder-frontend</module>
+	</modules>
+
+	<properties>
+		<revision>1.0.0</revision>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
+	<!-- oss 快照私服 -->
+	<repositories>
+		<repository>
+			<id>oss-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+</project>
