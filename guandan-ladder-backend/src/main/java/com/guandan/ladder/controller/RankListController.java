@@ -1,5 +1,6 @@
 package com.guandan.ladder.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import com.guandan.ladder.model.convert.UserConverter;
 import com.guandan.ladder.model.entity.User;
 import com.guandan.ladder.model.entity.UserGameInfo;
@@ -32,6 +33,10 @@ public class RankListController {
 	@GetMapping
 	public R<List<UserRankVO>> rank() {
 		List<UserGameInfo> userGameInfoList = userGameInfoService.listByWinNumDesc();
+		if (CollUtil.isEmpty(userGameInfoList)) {
+			return R.ok();
+		}
+
 		List<String> uidList = userGameInfoList.stream().map(UserGameInfo::getUid).collect(Collectors.toList());
 		Map<String, User> userMap = userService.listUserMapByUids(uidList);
 

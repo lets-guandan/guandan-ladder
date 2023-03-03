@@ -7,7 +7,7 @@ import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 
 // const serverAddress = 'http://admin.ballcat.cn'
-const serverAddress = 'http://localhost:8080'
+const serverAddress = 'http://localhost:11111'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -44,10 +44,7 @@ export default defineConfig({
       '^/api': {
         target: serverAddress,
         changeOrigin: true,
-        ws: true,
-        rewrite: path => {
-          return path.replace(/^\/api/, '')
-        }
+        ws: true
       }
     }
   },
