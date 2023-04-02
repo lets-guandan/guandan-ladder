@@ -1,7 +1,12 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/layouts/default/Login.vue')
+  },
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
@@ -21,6 +26,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    next()
+  } else if (!window.localStorage.getItem('token')) {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router

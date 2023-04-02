@@ -1,13 +1,14 @@
 import type {AxiosError, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
-import type { ApiResult } from '@/api/types'
-
-import { HttpClient } from '@/utils/axios/http-client'
 import {AxiosRequestHeaders} from "axios";
+import type {ApiResult} from '@/api/types'
+
+import {HttpClient} from '@/utils/axios/http-client'
 
 const onRequestFulfilled = (requestConfig: InternalAxiosRequestConfig) => {
   const headers = requestConfig.headers || {}
 
   // token
+  headers['token'] = window.localStorage.getItem('token');
   const accessToken = ''
   // Authorization 请求头不存在再进行追加
   if (accessToken && !headers['Authorization']) {
