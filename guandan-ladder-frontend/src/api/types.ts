@@ -79,3 +79,11 @@ export interface GameRecordDTO {
   loseUid2: string,
   gameTime: string
 }
+
+/**
+ * 用户登陆参数对象
+ */
+export interface LoginVO {
+  userName: string,
+  password: string
+}

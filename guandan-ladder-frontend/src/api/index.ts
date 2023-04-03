@@ -1,9 +1,13 @@
-import type {ApiResult} from '@/api/types'
-import httpClient from "@/utils/axios";
+import type {ApiResult, LoginVO} from '@/api/types'
 import {GameRecordDTO, UserRankVO, UserVO} from "@/api/types";
+import httpClient from "@/utils/axios";
 
 export const isSuccess = (result: ApiResult) => {
   return result.code === 200
+}
+
+export function loginApi(loginVO: LoginVO) {
+  return httpClient.post<ApiResult<string>>("/login", loginVO)
 }
 
 /** 获取排行榜接口 **/

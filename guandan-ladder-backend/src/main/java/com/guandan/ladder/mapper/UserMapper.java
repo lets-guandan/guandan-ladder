@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.guandan.ladder.model.entity.User;
 import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,4 +20,6 @@ public interface UserMapper extends ExtendMapper<User> {
 		return this.selectList(wrapper);
 	}
 
+	@Select("select * from user where username = #{userName} limit 1")
+	User selectByName(@Param("userName") String userName);
 }

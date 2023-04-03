@@ -149,16 +149,24 @@
 import {reactive, ref, toRaw} from "vue";
 import {listUserApi, reportGameRecordApi} from "@/api";
 import type {GameRecordDTO} from "@/api/types";
+import {UserVO} from "@/api/types";
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import {UserVO} from "@/api/types";
+import {useRouter} from "vue-router";
 
 
+const router = useRouter();
 const dialog = ref(false)
 
 const items = ref<UserVO[]>()
 listUserApi().then(res => {
+  if (res.code === 1000) {
+    if (res.code === 1000) {
+      router.replace("/login");
+      return
+    }
+  }
   items.value = res.data
 })
 
