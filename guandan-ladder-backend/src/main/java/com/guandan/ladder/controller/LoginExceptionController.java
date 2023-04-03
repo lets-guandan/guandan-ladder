@@ -16,6 +16,6 @@ public class LoginExceptionController {
 
 	@GetMapping("/loginException")
 	public R<Void> loginException() {
-		return R.failed(1000, "登陆异常，请重新登陆");
+		return R.failed(1000, "未获取到登录信息，请登录");
 	}
 }
