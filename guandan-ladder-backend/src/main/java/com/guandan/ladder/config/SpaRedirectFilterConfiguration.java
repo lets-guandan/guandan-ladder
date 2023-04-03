@@ -1,8 +1,6 @@
 package com.guandan.ladder.config;
 
-import cn.hutool.core.codec.Base64;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.internal.StringUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +8,6 @@ import org.springframework.core.Ordered;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,9 +24,6 @@ import java.util.regex.Pattern;
 @Slf4j
 @Configuration
 public class SpaRedirectFilterConfiguration {
-
-	@Resource
-	private TokenMap tokenMap;
 
 	private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
@@ -60,23 +54,6 @@ public class SpaRedirectFilterConfiguration {
 				String requestUri = req.getServletPath();
 				if (pattern.matcher(requestUri).matches() && !"/".equals(requestUri)) {
 					RequestDispatcher rd;
-					if (!"/api/login".equals(requestUri)) {
-						// 非登录接口需要判断token【userName-UUID】
-						String token = req.getHeader("token");
-						if (StringUtil.isBlank(token)) {
-							rd = req.getRequestDispatcher("/error/loginException");
-							rd.forward(req, res);
-							return;
-						}
-						String decodeStr = Base64.decodeStr(token);
-						String[] split = decodeStr.split("-");
-						String clientToken = tokenMap.getToken(split[0]);
-						if (StringUtil.isBlank(clientToken) || !clientToken.equals(split[1])) {
-							rd = req.getRequestDispatcher("/error/loginException");
-							rd.forward(req, res);
-							return;
-						}
-					}
 					if (SpaRedirectFilterConfiguration.ANT_PATH_MATCHER.match("/api/**", requestUri)) {
 						log.info("URL {} access the backend, redirecting...", requestUri);
 						rd = req.getRequestDispatcher(requestUri.substring(4));

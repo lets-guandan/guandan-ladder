@@ -1,9 +1,12 @@
 package com.guandan.ladder.config;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.Serializable;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author yuanjiajia
@@ -16,13 +19,27 @@ public class TokenMap implements Serializable {
 	/**
 	 * 缓存所有的登录用户token
 	 */
-	private final ConcurrentHashMap<String, String> tokens = new ConcurrentHashMap<>(16);
+	private Cache<Object, Object> cache;
+
+	@PostConstruct
+	public void init() {
+		cache = CacheBuilder.newBuilder()
+				// 设置并发级别为cpu核心数
+				.concurrencyLevel(Runtime.getRuntime().availableProcessors())
+				// 初始容量
+				.initialCapacity(10)
+				// 最大容量
+				.maximumSize(1000)
+				// 写缓存后15天过期
+				.expireAfterWrite(15, TimeUnit.DAYS)
+				.build();
+	}
 
 	public void setToken(String userName, String token) {
-		tokens.put(userName, token);
+		cache.put(userName, token);
 	}
 
 	public String getToken(String userName) {
-		return tokens.get(userName);
+		return (String) cache.getIfPresent(userName);
 	}
 }

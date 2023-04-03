@@ -162,10 +162,8 @@ const dialog = ref(false)
 const items = ref<UserVO[]>()
 listUserApi().then(res => {
   if (res.code === 1000) {
-    if (res.code === 1000) {
-      router.replace("/login");
-      return
-    }
+    router.replace("/login");
+    return
   }
   items.value = res.data
 })
