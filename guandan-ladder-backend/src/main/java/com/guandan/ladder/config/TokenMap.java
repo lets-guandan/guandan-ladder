@@ -33,6 +33,7 @@ public class TokenMap implements Serializable {
 				// 写缓存后15天过期
 				.expireAfterWrite(15, TimeUnit.DAYS)
 				.build();
+		cache.put("1","1");//构造一个用户
 	}
 
 	public void setToken(String userName, String token) {
