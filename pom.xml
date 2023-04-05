@@ -16,8 +16,8 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>guandan-ladder-backend</module>
 		<module>guandan-ladder-frontend</module>
+		<module>guandan-ladder-backend</module>
 	</modules>
 
 	<properties>

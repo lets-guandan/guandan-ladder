@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guandan.ladder.mapper.GameRecordMapper">
+
+
+
+<!--	1000=8 胜者1  -->
+<!--	0100=4 胜者2  -->
+<!--	0010=2 败者1  -->
+<!--	0001=1 败者2  -->
+	<update id="confirmRecord" parameterType="String">
+		update game_record set user_confirm_flag_bits =
+								   case
+									   when #{uid}=win_uid1 then 8|user_confirm_flag_bits
+									   when #{uid}=win_uid2 then 4|user_confirm_flag_bits
+									   when #{uid}=lose_uid1 then 2|user_confirm_flag_bits
+									   when #{uid}=lose_uid2 then 1|user_confirm_flag_bits
+									   else user_confirm_flag_bits end
+						 where id = #{id}
+	</update>
+
+</mapper>

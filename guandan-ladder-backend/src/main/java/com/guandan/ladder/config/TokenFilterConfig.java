@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author yuanjiajia
@@ -28,7 +29,7 @@ public class TokenFilterConfig {
 	private static final String LOGIN_EXCEPTION_PATH = "/error/loginException";
 	private static final String NONE_PATH = "/";
 	@Resource
-	private TokenMap tokenMap;
+	private TokenMap tokenMap = new TokenMap();
 
 	@Bean
 	public FilterRegistrationBean<OncePerRequestFilter> tokenCheckFiler() {
@@ -54,7 +55,14 @@ public class TokenFilterConfig {
 						return;
 					}
 				}
-				chain.doFilter(req, res);
+				try {
+					//将用户id存到本地线程 todo  处理成用户id
+					UserContext.setUserId(req.getHeader(TOKEN));
+					chain.doFilter(req, res);
+				} finally {
+					//清除本地线程 避免线程复用带来错误
+					UserContext.clear();
+				}
 			}
 		};
 	}
