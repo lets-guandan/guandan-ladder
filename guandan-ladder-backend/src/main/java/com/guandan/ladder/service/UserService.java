@@ -37,4 +37,5 @@ public class UserService {
 	public User queryByName(String userName) {
 		return userMapper.selectByName(userName);
 	}
+
 }

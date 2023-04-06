@@ -57,7 +57,8 @@ public class SpaRedirectFilterConfiguration {
 					if (SpaRedirectFilterConfiguration.ANT_PATH_MATCHER.match("/api/**", requestUri)) {
 						log.info("URL {} access the backend, redirecting...", requestUri);
 						rd = req.getRequestDispatcher(requestUri.substring(4));
-					} else {
+					}
+					else {
 						// Delegate/Forward to `/` if `pattern` matches and it is not `/`
 						// Required because of 'mode: history'usage in frontend routing,
 						// see README for further details
@@ -65,7 +66,8 @@ public class SpaRedirectFilterConfiguration {
 						rd = req.getRequestDispatcher("/");
 					}
 					rd.forward(req, res);
-				} else {
+				}
+				else {
 					chain.doFilter(req, res);
 				}
 			}

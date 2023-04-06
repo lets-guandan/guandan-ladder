@@ -22,4 +22,5 @@ public interface UserMapper extends ExtendMapper<User> {
 
 	@Select("select * from user where username = #{userName} limit 1")
 	User selectByName(@Param("userName") String userName);
+
 }

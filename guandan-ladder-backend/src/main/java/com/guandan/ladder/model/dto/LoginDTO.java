@@ -31,9 +31,7 @@ public class LoginDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "LoginDTO{" +
-				"userName='" + userName + '\'' +
-				", password='" + password + '\'' +
-				'}';
+		return "LoginDTO{" + "userName='" + userName + '\'' + ", password='" + password + '\'' + '}';
 	}
+
 }

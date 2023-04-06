@@ -37,8 +37,7 @@ public class LoginController {
 
 	@PostMapping
 	public R<String> login(@RequestBody LoginDTO loginDTO) {
-		if (Objects.isNull(loginDTO)
-				|| StringUtils.isBlank(loginDTO.getUserName())
+		if (Objects.isNull(loginDTO) || StringUtils.isBlank(loginDTO.getUserName())
 				|| StringUtils.isBlank(loginDTO.getPassword())) {
 			return R.failed(500, "用户名或密码不允许为空");
 		}

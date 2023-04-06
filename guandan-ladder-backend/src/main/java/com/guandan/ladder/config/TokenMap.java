@@ -31,9 +31,8 @@ public class TokenMap implements Serializable {
 				// 最大容量
 				.maximumSize(1000)
 				// 写缓存后15天过期
-				.expireAfterWrite(15, TimeUnit.DAYS)
-				.build();
-		cache.put("1","1");//构造一个用户
+				.expireAfterWrite(15, TimeUnit.DAYS).build();
+		cache.put("1", "1");// 构造一个用户
 	}
 
 	public void setToken(String userName, String token) {
@@ -43,4 +42,5 @@ public class TokenMap implements Serializable {
 	public String getToken(String userName) {
 		return (String) cache.getIfPresent(userName);
 	}
+
 }

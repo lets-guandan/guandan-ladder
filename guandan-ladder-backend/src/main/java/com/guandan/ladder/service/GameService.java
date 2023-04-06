@@ -33,18 +33,20 @@ public class GameService {
 	public void saveRecord(GameRecordDto gameRecordDto) {
 		String userId = UserContext.getUserId();
 		GameRecord gameRecord = GameConverter.INSTANCE.recordDtoToEntity(gameRecordDto);
-		if(userId.equals(gameRecordDto.getWinUid1())){
+		if (userId.equals(gameRecordDto.getWinUid1())) {
 			gameRecord.setUserConfirmFlagBits(8);
-		}else if(userId.equals(gameRecordDto.getWinUid2())){
+		}
+		else if (userId.equals(gameRecordDto.getWinUid2())) {
 			gameRecord.setUserConfirmFlagBits(4);
-		}else if(userId.equals(gameRecordDto.getLoseUid1())){
+		}
+		else if (userId.equals(gameRecordDto.getLoseUid1())) {
 			gameRecord.setUserConfirmFlagBits(2);
-		}else if(userId.equals(gameRecordDto.getLoseUid2())){
+		}
+		else if (userId.equals(gameRecordDto.getLoseUid2())) {
 			gameRecord.setUserConfirmFlagBits(1);
 		}
 		gameRecordMapper.insert(gameRecord);
 	}
-
 
 	/**
 	 * 待确认战绩列表
@@ -53,12 +55,9 @@ public class GameService {
 		String uid = UserContext.getUserId();
 		// 查询参与对局 且 不等于15的表示未确认完成的
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
-				.ne(GameRecord::getUserConfirmFlagBits, 15).and(
-						w ->   w.eq(GameRecord::getWinUid1, uid)
-								.or().eq(GameRecord::getWinUid2, uid)
-								.or().eq(GameRecord::getLoseUid1, uid)
-								.or().eq(GameRecord::getLoseUid2, uid)
-				);
+				.ne(GameRecord::getUserConfirmFlagBits, 15)
+				.and(w -> w.eq(GameRecord::getWinUid1, uid).or().eq(GameRecord::getWinUid2, uid).or()
+						.eq(GameRecord::getLoseUid1, uid).or().eq(GameRecord::getLoseUid2, uid));
 		List<GameRecord> list = gameRecordMapper.selectList(wrapper);
 		if (list == null) {
 			return new ArrayList<>();
@@ -81,6 +80,5 @@ public class GameService {
 			userGameInfoMapper.incrTotalNum(gameRecord.getLoseUid1(), gameRecord.getLoseUid2());
 		}
 	}
-
 
 }

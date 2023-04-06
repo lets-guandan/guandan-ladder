@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * 待确认列表出参
+ *
  * @author hushaoming
  */
 @Data
@@ -39,13 +40,12 @@ public class GameRecordUnConfirmOutDto {
 	private LocalDateTime gameTime;
 
 	/**
-	 * 确认状态
-	 * 示例：1000
+	 * 确认状态 示例：1000
 	 */
 	private String userConfirmFlag;
+
 	/**
-	 * 确认状态十进制
-	 * 示例：7
+	 * 确认状态十进制 示例：7
 	 */
 	private int userConfirmFlagBits;
 
