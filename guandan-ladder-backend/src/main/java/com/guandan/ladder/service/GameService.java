@@ -2,7 +2,7 @@ package com.guandan.ladder.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.guandan.ladder.config.UserContext;
+import com.guandan.ladder.security.SecurityContext;
 import com.guandan.ladder.mapper.GameRecordMapper;
 import com.guandan.ladder.mapper.UserGameInfoMapper;
 import com.guandan.ladder.model.convert.GameConverter;
@@ -31,7 +31,7 @@ public class GameService {
 
 	@Transactional(rollbackFor = Exception.class)
 	public void saveRecord(GameRecordDto gameRecordDto) {
-		String userId = UserContext.getUserId();
+		String userId = SecurityContext.getUserId();
 		GameRecord gameRecord = GameConverter.INSTANCE.recordDtoToEntity(gameRecordDto);
 		if (userId.equals(gameRecordDto.getWinUid1())) {
 			gameRecord.setUserConfirmFlagBits(8);
@@ -52,7 +52,7 @@ public class GameService {
 	 * 待确认战绩列表
 	 */
 	public List<GameRecordUnConfirmOutDto> umConfirmList() {
-		String uid = UserContext.getUserId();
+		String uid = SecurityContext.getUserId();
 		// 查询参与对局 且 不等于15的表示未确认完成的
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
 				.ne(GameRecord::getUserConfirmFlagBits, 15)
@@ -71,7 +71,7 @@ public class GameService {
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	public void confirmRecord(ConfirmRecordDto confirmRecordDto) {
-		String userId = UserContext.getUserId();
+		String userId = SecurityContext.getUserId();
 		gameRecordMapper.confirmRecord(userId, confirmRecordDto.getRecordId());
 		GameRecord gameRecord = gameRecordMapper.selectById(confirmRecordDto.getRecordId());
 		// 如果都确认了 则记录到历史战绩

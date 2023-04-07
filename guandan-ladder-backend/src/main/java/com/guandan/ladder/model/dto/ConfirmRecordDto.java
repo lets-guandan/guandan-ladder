@@ -2,9 +2,7 @@ package com.guandan.ladder.model.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 /**
  * 确认战绩dto 采用按位或运算 1111表示全部确认 =15 0001=1 败者2 0010=2 败者1 0011=3 0100=4 胜者2 0101=5 0110=6

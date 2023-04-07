@@ -155,16 +155,11 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import {useRouter} from "vue-router";
 
-
 const router = useRouter();
 const dialog = ref(false)
 
 const items = ref<UserVO[]>()
 listUserApi().then(res => {
-  if (res.code === 1000) {
-    router.replace("/login");
-    return
-  }
   items.value = res.data
 })
 

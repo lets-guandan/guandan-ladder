@@ -1,28 +1,20 @@
 import type {AxiosError, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
 import {AxiosRequestHeaders} from "axios";
-import type {ApiResult} from '@/api/types'
 
 import {HttpClient} from '@/utils/axios/http-client'
+import {useTokenStore} from "@/store/user-store";
+import router from "@/router";
 
 const onRequestFulfilled = (requestConfig: InternalAxiosRequestConfig) => {
   const headers = requestConfig.headers || {}
 
   // token
-  headers['token'] = window.localStorage.getItem('token');
-  const accessToken = ''
+  const token = useTokenStore().token
   // Authorization 请求头不存在再进行追加
-  if (accessToken && !headers['Authorization']) {
+  if (token && !headers['token']) {
     // 让每个请求携带自定义 token 请根据实际情况自行修改
-    headers['Authorization'] = 'Bearer ' + accessToken
+    headers['token'] = token
   }
-
-  // i18n
-  // if (enableI18n) {
-  //   const appLanguage = store.getters.lang
-  //   if (appLanguage) {
-  //     headers['Accept-Language'] = appLanguage
-  //   }
-  // }
 
   if (requestConfig.headers) {
     requestConfig.headers = headers
@@ -47,8 +39,21 @@ const onResponseFulfilled = (response: AxiosResponse) => {
 // 响应失败处理函数
 const onResponseRejected = (error: AxiosError) => {
   if (error.response) {
-    const data = error.response.data as unknown as ApiResult
     const errorStatus = error.response.status
+    switch (errorStatus) {
+      case 401:
+        error.resolved = true
+        useTokenStore().clean()
+        if (router.currentRoute.value.path !== '/login') {
+          router.push({
+            path: '/login',
+            query: {redirect: router.currentRoute.value.fullPath}
+          })
+        }
+        break
+    }
+  } else {
+    error.resolved = true
   }
   return Promise.reject(error)
 }

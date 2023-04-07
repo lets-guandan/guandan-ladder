@@ -1,5 +1,6 @@
 // Composables
 import {createRouter, createWebHistory} from 'vue-router'
+import {useTokenStore} from "@/store/user-store";
 
 const routes = [
   {
@@ -28,10 +29,12 @@ const router = createRouter({
   routes,
 })
 
+// 路由守卫
 router.beforeEach((to, from, next) => {
+  const token = useTokenStore().token;
   if (to.path === '/login') {
     next()
-  } else if (!window.localStorage.getItem('token')) {
+  } else if (!token) {
     next('/login')
   } else {
     next()

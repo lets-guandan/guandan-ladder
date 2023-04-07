@@ -2,6 +2,7 @@ import type {AxiosError} from 'axios'
 import type {AlertMode, MessageInfo, RequestOptions} from '@/utils/axios/types'
 import type {ApiResult} from '@/api/types'
 import {isSuccess} from '@/api'
+import SnackbarMessage from "@/hooks/use-message";
 
 /**
  * 请求方法封装
@@ -73,7 +74,7 @@ function alertMessage(
 
 function alert(alertInfo: { message: string; mode?: AlertMode; type: string }) {
   const alertMessage = alertInfo.message
-  console.error(alertMessage)
+  SnackbarMessage(alertMessage)
 }
 
 function alertSuccessMessage<T>(requestOptions: RequestOptions<T>, res: ApiResult<T>) {

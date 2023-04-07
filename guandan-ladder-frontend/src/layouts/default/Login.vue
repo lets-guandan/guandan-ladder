@@ -29,6 +29,7 @@ import {reactive, toRaw} from "vue";
 import {LoginVO} from "@/api/types";
 import {isSuccess, loginApi} from "@/api";
 import {useRouter} from "vue-router";
+import {useTokenStore} from "@/store/user-store";
 
 const nameRules = [
   (v: string) => !!v || '账号不允许为空'
@@ -50,7 +51,7 @@ function guandanLogin() {
   let promise = loginApi(toRaw(loginVO));
   promise.then((result) => {
     if (isSuccess(result) && result.data != '') {
-      window.localStorage.setItem("token", result.data);
+      useTokenStore().token = result.data
       router.replace("/");
       return;
     }
