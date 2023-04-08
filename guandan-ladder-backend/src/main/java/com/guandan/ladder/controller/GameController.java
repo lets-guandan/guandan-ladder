@@ -3,6 +3,7 @@ package com.guandan.ladder.controller;
 import cn.hutool.core.lang.Assert;
 import com.guandan.ladder.model.dto.ConfirmRecordDto;
 import com.guandan.ladder.model.dto.GameRecordDto;
+import com.guandan.ladder.model.dto.GameRecordOutDto;
 import com.guandan.ladder.model.dto.GameRecordUnConfirmOutDto;
 import com.guandan.ladder.service.GameService;
 import com.hccake.ballcat.common.model.result.R;
@@ -43,6 +44,15 @@ public class GameController {
 	}
 
 	/**
+	 * 历史战绩
+	 */
+	@PostMapping("/list")
+	public R<List<GameRecordOutDto>> gameList() {
+		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList();
+		return R.ok(gameRecordOutDtoList);
+	}
+
+	/**
 	 * 待确认战绩列表
 	 */
 	@PostMapping("/umConfirmList")
@@ -59,5 +69,7 @@ public class GameController {
 		gameService.confirmRecord(confirmRecordDto);
 		return R.ok();
 	}
+
+
 
 }

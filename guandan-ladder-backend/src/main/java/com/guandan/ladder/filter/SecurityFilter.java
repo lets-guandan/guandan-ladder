@@ -65,8 +65,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 		try {
 			SecurityContext.setContext(jwtClaimsSet);
 			chain.doFilter(servletRequest, servletResponse);
-		}
-		finally {
+		} finally {
 			// 清除本地线程 避免线程复用带来错误
 			SecurityContext.clear();
 		}
