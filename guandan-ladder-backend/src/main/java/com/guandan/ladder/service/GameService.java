@@ -75,7 +75,8 @@ public class GameService {
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
 				.ne(GameRecord::getUserConfirmFlagBits, 15)
 				.and(w -> w.eq(GameRecord::getWinUid1, uid).or().eq(GameRecord::getWinUid2, uid).or()
-						.eq(GameRecord::getLoseUid1, uid).or().eq(GameRecord::getLoseUid2, uid));
+						.eq(GameRecord::getLoseUid1, uid).or().eq(GameRecord::getLoseUid2, uid))
+				.orderByDesc(GameRecord::getGameTime);
 		List<GameRecord> list = gameRecordMapper.selectList(wrapper);
 		if (list == null) {
 			return new ArrayList<>();
