@@ -1,6 +1,7 @@
 package com.guandan.ladder.model.convert;
 
 import com.guandan.ladder.model.dto.GameRecordDto;
+import com.guandan.ladder.model.dto.GameRecordOutDto;
 import com.guandan.ladder.model.dto.GameRecordUnConfirmOutDto;
 import com.guandan.ladder.model.entity.GameRecord;
 import org.mapstruct.Mapper;
@@ -20,6 +21,8 @@ public interface GameConverter {
 	GameConverter INSTANCE = Mappers.getMapper(GameConverter.class);
 
 	GameRecord recordDtoToEntity(GameRecordDto dto);
+
+	GameRecordOutDto recordOutDtoToEntity(GameRecord dto);
 
 	@Mappings({ @Mapping(target = "userConfirmFlag", source = "userConfirmFlagBits",
 			qualifiedByName = "confirmFlagCalculator") })

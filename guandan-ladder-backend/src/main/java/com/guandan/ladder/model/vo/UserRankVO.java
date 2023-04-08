@@ -2,6 +2,8 @@ package com.guandan.ladder.model.vo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author hccake
  */
@@ -47,5 +49,10 @@ public class UserRankVO {
 	 * 参与局数
 	 */
 	private Integer totalNum;
+
+	/**
+	 * 胜率
+	 */
+	private BigDecimal winPercent;
 
 }

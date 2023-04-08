@@ -5,12 +5,12 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 待确认列表出参
+ * 历史战绩出参
  *
  * @author hushaoming
  */
 @Data
-public class GameRecordUnConfirmOutDto {
+public class GameRecordOutDto {
 
 	/**
 	 * 对局主键ID
@@ -38,18 +38,9 @@ public class GameRecordUnConfirmOutDto {
 	private String loseUid2;
 
 	/**
-	 * 比赛时间
+	 * 比赛时间 建议记录比赛持续时间 和 比赛备注
 	 */
 	private LocalDateTime gameTime;
 
-	/**
-	 * 确认状态 示例：1000
-	 */
-	private String userConfirmFlag;
-
-	/**
-	 * 确认状态十进制 示例：7
-	 */
-	private int userConfirmFlagBits;
 
 }
