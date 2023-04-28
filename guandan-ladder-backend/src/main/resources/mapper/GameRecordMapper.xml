@@ -9,14 +9,25 @@
 <!--	0010=2 败者1  -->
 <!--	0001=1 败者2  -->
 	<update id="confirmRecord" parameterType="String">
-		update game_record set user_confirm_flag_bits =
-								   case
-									   when #{uid}=win_uid1 then 8|user_confirm_flag_bits
-									   when #{uid}=win_uid2 then 4|user_confirm_flag_bits
-									   when #{uid}=lose_uid1 then 2|user_confirm_flag_bits
-									   when #{uid}=lose_uid2 then 1|user_confirm_flag_bits
-									   else user_confirm_flag_bits end
-						 where id = #{id}
+		update game_record
+		set user_confirm_flag_bits =
+				case
+					when #{uid} = win_uid1 then 8|user_confirm_flag_bits
+					when #{uid} = win_uid2 then 4|user_confirm_flag_bits
+					when #{uid} = lose_uid1 then 2|user_confirm_flag_bits
+					when #{uid} = lose_uid2 then 1|user_confirm_flag_bits
+					else user_confirm_flag_bits end
+		where id = #{id}
 	</update>
+
+	<select id="selectUnconfirmedList" resultType="com.guandan.ladder.model.entity.GameRecord">
+		select *
+		from game_record
+		where (#{uid} = win_uid1 and (8&amp;user_confirm_flag_bits) != 8)
+		   or (#{uid} = win_uid2 and (4&amp;user_confirm_flag_bits) != 4)
+		   or (#{uid} = lose_uid1 and (2&amp;user_confirm_flag_bits) != 2)
+		   or (#{uid} = lose_uid2 and (1&amp;user_confirm_flag_bits) != 1)
+		order by id desc
+	</select>
 
 </mapper>

@@ -2,15 +2,13 @@ package com.guandan.ladder.model.convert;
 
 import com.guandan.ladder.model.dto.GameRecordDto;
 import com.guandan.ladder.model.dto.GameRecordOutDto;
-import com.guandan.ladder.model.dto.GameRecordUnConfirmOutDto;
+import com.guandan.ladder.model.dto.GameRecordVO;
 import com.guandan.ladder.model.entity.GameRecord;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 /**
  * @author hccake
@@ -26,7 +24,7 @@ public interface GameConverter {
 
 	@Mappings({ @Mapping(target = "userConfirmFlag", source = "userConfirmFlagBits",
 			qualifiedByName = "confirmFlagCalculator") })
-	GameRecordUnConfirmOutDto recordEntityToOutDto(GameRecord dto);
+	GameRecordVO recordEntityToVO(GameRecord dto);
 
 	/**
 	 * 将十进制数字转成二进制字符串显示，可以判断谁确认了 * 0001=1 败者2 * 0010=2 败者1 * 0011=3 * 0100=4 胜者2 * 0101=5
