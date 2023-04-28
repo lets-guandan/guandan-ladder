@@ -38,3 +38,6 @@ build/
 gener-logs/
 
 /src/main/resources/public
+
+output.log
+error.log
