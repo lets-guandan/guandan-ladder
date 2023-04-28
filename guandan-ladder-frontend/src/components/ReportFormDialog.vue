@@ -147,15 +147,13 @@
 
 <script setup lang="ts">
 import {reactive, ref, toRaw} from "vue";
-import {listUserApi, reportGameRecordApi} from "@/api";
+import {isSuccess, listUserApi, reportGameRecordApi} from "@/api";
 import type {GameRecordDTO} from "@/api/types";
 import {UserVO} from "@/api/types";
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import {useRouter} from "vue-router";
 
-const router = useRouter();
 const dialog = ref(false)
 
 const items = ref<UserVO[]>()
@@ -173,6 +171,17 @@ const formModel = reactive<GameRecordDTO>({
 
 function handleSubmit() {
   reportGameRecordApi(toRaw(formModel))
+    .then(res => {
+      if (isSuccess(res)) {
+        alert('战绩上报成功！')
+        dialog.value = false
+      } else {
+        alert('战绩上报异常！')
+      }
+    })
+    .catch(e => {
+      alert('战绩上报异常！' + e.message)
+    })
 }
 
 </script>
