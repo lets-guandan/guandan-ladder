@@ -20,6 +20,16 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "home" */ '@/views/Rank.vue'),
       },
+      {
+        path: '/record/unconfirmed',
+        name: 'UnconfirmedRecord',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/UnconfirmedRecord.vue'),
+      },
+      {
+        path: '/record/history',
+        name: 'HistoryRecord',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/HistoryRecord.vue'),
+      },
     ],
   },
 ]

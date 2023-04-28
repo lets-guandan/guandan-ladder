@@ -1,13 +1,15 @@
 package com.guandan.ladder.controller;
 
 import com.guandan.ladder.constant.RankListTypeEnum;
-import com.guandan.ladder.model.dto.RankDTO;
 import com.guandan.ladder.model.vo.UserRankVO;
 import com.guandan.ladder.service.UserGameInfoService;
 import com.hccake.ballcat.common.model.result.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
