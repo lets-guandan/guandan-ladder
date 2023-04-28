@@ -2,9 +2,6 @@ package com.guandan.ladder.model.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
-
 /**
  * @author hushaoming 2023/4/8
  */

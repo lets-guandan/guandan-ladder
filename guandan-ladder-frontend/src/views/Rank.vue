@@ -32,12 +32,12 @@
 <script lang="ts" setup>
 import {ref} from "vue";
 import {rankListApi} from "@/api";
-import {UserRankVO} from "@/api/types";
+import {RankListTypeEnum, UserRankVO} from "@/api/types";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
 const data = ref<UserRankVO[]>()
-rankListApi().then(res => {
+rankListApi(RankListTypeEnum.WIN_COUNT).then(res => {
   if (res.code === 1000) {
     alert(res.message);
     router.replace("/login");

@@ -20,6 +20,7 @@ public interface UserGameInfoMapper extends ExtendMapper<UserGameInfo> {
 	 */
 	default List<UserGameInfo> listByWinNumDesc() {
 		LambdaQueryWrapper<UserGameInfo> wrapper = Wrappers.lambdaQuery(UserGameInfo.class)
+			.ne(UserGameInfo::getTotalNum, 0)
 			.orderByDesc(UserGameInfo::getWinNum);
 		return this.selectList(wrapper);
 	}

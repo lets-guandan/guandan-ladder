@@ -1,12 +1,14 @@
 package com.guandan.ladder.service;
 
 import cn.hutool.core.collection.CollUtil;
+import com.guandan.ladder.constant.RankListTypeEnum;
 import com.guandan.ladder.mapper.UserGameInfoMapper;
 import com.guandan.ladder.model.convert.UserConverter;
-import com.guandan.ladder.model.dto.RankDTO;
 import com.guandan.ladder.model.entity.User;
 import com.guandan.ladder.model.entity.UserGameInfo;
 import com.guandan.ladder.model.vo.UserRankVO;
+import com.hccake.ballcat.common.core.exception.BusinessException;
+import com.hccake.ballcat.common.model.result.SystemResultCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,15 +31,20 @@ public class UserGameInfoService {
 
 	private final UserGameInfoMapper userGameInfoMapper;
 
-	public List<UserRankVO> rank(@RequestBody RankDTO rankDTO) {
+	public List<UserRankVO> rank(RankListTypeEnum rankListTypeEnum) {
 		List<UserGameInfo> userGameInfoList;
-		// 胜场 or 胜率
-		if ("winNum".equals(rankDTO.getTag())) {
-			userGameInfoList = userGameInfoMapper.listByWinNumDesc();
+
+		switch (rankListTypeEnum) {
+			case WIN_COUNT:
+				userGameInfoList = userGameInfoMapper.listByWinNumDesc();
+				break;
+			case WIN_RATE:
+				userGameInfoList = userGameInfoMapper.listByWinPercentDesc();
+				break;
+			default:
+				throw new BusinessException(SystemResultCode.BAD_REQUEST.getCode(), "错误的排行类型");
 		}
-		else {
-			userGameInfoList = userGameInfoMapper.listByWinPercentDesc();
-		}
+
 		if (CollUtil.isEmpty(userGameInfoList)) {
 			return new ArrayList<>();
 		}

@@ -11,8 +11,10 @@ export function loginApi(loginVO: LoginVO) {
 }
 
 /** 获取排行榜接口 **/
-export function rankListApi() {
-  return httpClient.get<ApiResult<UserRankVO[]>>("/rank-list")
+export function rankListApi(rankType: number) {
+  return httpClient.get<ApiResult<UserRankVO[]>>("/rank/list", {
+    params: {rankType: rankType}
+  })
 }
 
 

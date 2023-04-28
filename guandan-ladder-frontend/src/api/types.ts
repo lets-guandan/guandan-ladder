@@ -87,3 +87,14 @@ export interface LoginVO {
   userName: string,
   password: string
 }
+
+
+/**
+ * 排行榜类型枚举
+ */
+export enum RankListTypeEnum {
+  // 胜场榜
+  WIN_COUNT = 1,
+  // 胜率榜
+  WIN_RATE = 2
+}

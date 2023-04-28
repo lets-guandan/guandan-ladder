@@ -1,10 +1,12 @@
 package com.guandan.ladder.controller;
 
+import com.guandan.ladder.constant.RankListTypeEnum;
 import com.guandan.ladder.model.dto.RankDTO;
 import com.guandan.ladder.model.vo.UserRankVO;
 import com.guandan.ladder.service.UserGameInfoService;
 import com.hccake.ballcat.common.model.result.R;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +24,11 @@ public class RankListController {
 	/**
 	 * 排行榜：胜场 & 胜率
 	 */
-	@PostMapping("/list")
-	public R<List<UserRankVO>> rank(@RequestBody RankDTO rankDTO) {
-		List<UserRankVO> userRankVOS = userGameInfoService.rank(rankDTO);
+	@GetMapping("/list")
+	public R<List<UserRankVO>> rank(@RequestParam("rankType") Integer rankType) {
+		RankListTypeEnum rankListTypeEnum = RankListTypeEnum.valueOf(rankType);
+		Assert.notNull(rankListTypeEnum, "未知的排行类型：" + rankType);
+		List<UserRankVO> userRankVOS = userGameInfoService.rank(rankListTypeEnum);
 		return R.ok(userRankVOS);
 	}
 
