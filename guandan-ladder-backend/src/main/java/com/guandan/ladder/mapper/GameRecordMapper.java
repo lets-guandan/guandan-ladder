@@ -26,15 +26,15 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 	default List<GameRecord> selectValidRecords(String uid) {
 		// 查询参与对局 且 等于15的表示 确认完成的
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
-				.eq(GameRecord::getUserConfirmFlagBits, 15)
-				.and(w -> w.eq(GameRecord::getWinUid1, uid)
-						.or()
-						.eq(GameRecord::getWinUid2, uid)
-						.or()
-						.eq(GameRecord::getLoseUid1, uid)
-						.or()
-						.eq(GameRecord::getLoseUid2, uid))
-				.orderByDesc(GameRecord::getGameTime);
+			.eq(GameRecord::getUserConfirmFlagBits, 15)
+			.and(w -> w.eq(GameRecord::getWinUid1, uid)
+				.or()
+				.eq(GameRecord::getWinUid2, uid)
+				.or()
+				.eq(GameRecord::getLoseUid1, uid)
+				.or()
+				.eq(GameRecord::getLoseUid2, uid))
+			.orderByDesc(GameRecord::getGameTime);
 		return this.selectList(wrapper);
 	}
 
@@ -44,6 +44,5 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 	 * @return List<GameRecord>
 	 */
 	List<GameRecord> selectUnconfirmedList(@Param("uid") String uid);
-
 
 }
