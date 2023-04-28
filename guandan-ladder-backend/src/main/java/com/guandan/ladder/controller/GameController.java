@@ -10,10 +10,7 @@ import com.hccake.ballcat.common.model.result.R;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -46,11 +43,12 @@ public class GameController {
 	}
 
 	/**
+	 * @param uid 用户id
 	 * 历史战绩
 	 */
-	@PostMapping("/list")
-	public R<List<GameRecordOutDto>> gameList() {
-		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList();
+	@GetMapping("/list")
+	public R<List<GameRecordOutDto>> gameList(@RequestParam("uid") String uid) {
+		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList(uid);
 		return R.ok(gameRecordOutDtoList);
 	}
 

@@ -52,8 +52,7 @@ public class GameService {
 	/**
 	 * 历史战绩列表
 	 */
-	public List<GameRecordOutDto> gameList() {
-		String uid = SecurityContext.getUserId();
+	public List<GameRecordOutDto> gameList(String uid) {
 		// 查询参与对局 且 等于15的表示 确认完成的
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
 			.eq(GameRecord::getUserConfirmFlagBits, 15)
