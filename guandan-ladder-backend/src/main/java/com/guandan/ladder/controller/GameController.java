@@ -48,11 +48,12 @@ public class GameController {
 	}
 
 	/**
+	 * @param uid 用户id
 	 * 历史战绩
 	 */
-	@PostMapping("/list")
-	public R<List<GameRecordOutDto>> gameList() {
-		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList();
+	@GetMapping("/list")
+	public R<List<GameRecordOutDto>> gameList(@RequestParam("uid") String uid) {
+		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList(uid);
 		return R.ok(gameRecordOutDtoList);
 	}
 

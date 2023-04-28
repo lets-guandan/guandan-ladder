@@ -49,9 +49,7 @@ public class GameService {
 	/**
 	 * 历史战绩列表
 	 */
-	public List<GameRecordOutDto> gameList() {
-		String uid = SecurityContext.getUserId();
-
+	public List<GameRecordOutDto> gameList(String uid) {
 		List<GameRecord> list = gameRecordMapper.selectValidRecords(uid);
 		if (list == null) {
 			return new ArrayList<>();
