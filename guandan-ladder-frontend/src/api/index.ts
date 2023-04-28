@@ -27,3 +27,14 @@ export function listUserApi() {
 export function reportGameRecordApi(gameRecord: GameRecordDTO) {
   return httpClient.post<ApiResult>('/game/record', gameRecord)
 }
+
+
+/** 获取待确认战局记录 */
+export function getUnconfirmedRecordApi() {
+  return httpClient.get<ApiResult>('/game/record/unconfirmed')
+}
+
+/** 确认战局记录 */
+export function confirmRecordApi(recordId: number) {
+  return httpClient.post<ApiResult>('/game/confirm-record', {recordId: recordId})
+}

@@ -1,14 +1,11 @@
 package com.guandan.ladder.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.guandan.ladder.mapper.GameRecordMapper;
 import com.guandan.ladder.mapper.UserGameInfoMapper;
 import com.guandan.ladder.model.convert.GameConverter;
 import com.guandan.ladder.model.dto.ConfirmRecordDto;
 import com.guandan.ladder.model.dto.GameRecordDto;
 import com.guandan.ladder.model.dto.GameRecordOutDto;
-import com.guandan.ladder.model.dto.GameRecordUnConfirmOutDto;
 import com.guandan.ladder.model.entity.GameRecord;
 import com.guandan.ladder.security.SecurityContext;
 import lombok.RequiredArgsConstructor;
@@ -53,18 +50,7 @@ public class GameService {
 	 * 历史战绩列表
 	 */
 	public List<GameRecordOutDto> gameList(String uid) {
-		// 查询参与对局 且 等于15的表示 确认完成的
-		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
-			.eq(GameRecord::getUserConfirmFlagBits, 15)
-			.and(w -> w.eq(GameRecord::getWinUid1, uid)
-				.or()
-				.eq(GameRecord::getWinUid2, uid)
-				.or()
-				.eq(GameRecord::getLoseUid1, uid)
-				.or()
-				.eq(GameRecord::getLoseUid2, uid))
-			.orderByDesc(GameRecord::getGameTime);
-		List<GameRecord> list = gameRecordMapper.selectList(wrapper);
+		List<GameRecord> list = gameRecordMapper.selectValidRecords(uid);
 		if (list == null) {
 			return new ArrayList<>();
 		}
@@ -74,24 +60,13 @@ public class GameService {
 	/**
 	 * 待确认战绩列表
 	 */
-	public List<GameRecordUnConfirmOutDto> umConfirmList() {
+	public List<GameRecord> unconfirmedRecordList() {
 		String uid = SecurityContext.getUserId();
-		// 查询参与对局 且 不等于15的表示未确认完成的
-		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
-			.ne(GameRecord::getUserConfirmFlagBits, 15)
-			.and(w -> w.eq(GameRecord::getWinUid1, uid)
-				.or()
-				.eq(GameRecord::getWinUid2, uid)
-				.or()
-				.eq(GameRecord::getLoseUid1, uid)
-				.or()
-				.eq(GameRecord::getLoseUid2, uid))
-			.orderByDesc(GameRecord::getGameTime);
-		List<GameRecord> list = gameRecordMapper.selectList(wrapper);
+		List<GameRecord> list = gameRecordMapper.selectUnconfirmedList(uid);
 		if (list == null) {
 			return new ArrayList<>();
 		}
-		return list.stream().map(GameConverter.INSTANCE::recordEntityToOutDto).collect(Collectors.toList());
+		return list;
 	}
 
 	/**

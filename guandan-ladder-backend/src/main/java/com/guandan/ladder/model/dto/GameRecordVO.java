@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * @author hushaoming
  */
 @Data
-public class GameRecordUnConfirmOutDto {
+public class GameRecordVO {
 
 	/**
 	 * 对局主键ID
@@ -18,14 +18,24 @@ public class GameRecordUnConfirmOutDto {
 	private Integer id;
 
 	/**
-	 * 胜者1
+	 * 胜者1 Uid
 	 */
 	private String winUid1;
 
 	/**
-	 * 胜者2
+	 * 胜者1 昵称
+	 */
+	private String winNickname1;
+
+	/**
+	 * 胜者2 Uid
 	 */
 	private String winUid2;
+
+	/**
+	 * 胜者2 昵称
+	 */
+	private String winNickname2;
 
 	/**
 	 * 败者1
@@ -33,9 +43,19 @@ public class GameRecordUnConfirmOutDto {
 	private String loseUid1;
 
 	/**
+	 * 败者1 昵称
+	 */
+	private String loseNickname1;
+
+	/**
 	 * 败者2
 	 */
 	private String loseUid2;
+
+	/**
+	 * 败者2 昵称
+	 */
+	private String loseNickname2;
 
 	/**
 	 * 比赛时间
