@@ -48,7 +48,8 @@ public class GameController {
 	}
 
 	/**
-	 * @param uid 用户id 历史战绩
+	 * 历史战绩
+	 * @param uid 用户id
 	 */
 	@GetMapping("/list")
 	public R<List<GameRecordOutDto>> gameList(@RequestParam("uid") String uid) {
