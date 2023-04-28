@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,12 +27,26 @@ public class SecurityFilter extends OncePerRequestFilter {
 
 	private static final String HEADER_TOKEN = "token";
 
+	/**
+	 * Forwards all routes except '/index.html', '/200.html', '/favicon.ico', '/sw.js'
+	 * '/api/', '/api/**'
+	 */
+	private static final String REGEX = "(/actuator|/_nuxt|/static|/index\\.html|/200\\.html|/favicon\\.ico|/sw\\.js|^/v3/api-docs|^/swagger-ui).*$";
+
+	private static final Pattern PATTERN = Pattern.compile(REGEX);
+
 	private static final Set<String> IGNORE_PATH_SET = Stream.of("/", "/login").collect(Collectors.toSet());
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest servletRequest, HttpServletResponse servletResponse,
 			FilterChain chain) throws ServletException, IOException {
 		String requestUri = servletRequest.getServletPath();
+
+		// 静态资源放行
+		if (PATTERN.matcher(requestUri).matches()) {
+			chain.doFilter(servletRequest, servletResponse);
+			return;
+		}
 
 		if (IGNORE_PATH_SET.contains(requestUri)) {
 			chain.doFilter(servletRequest, servletResponse);
