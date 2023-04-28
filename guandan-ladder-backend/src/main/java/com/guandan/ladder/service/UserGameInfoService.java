@@ -31,10 +31,11 @@ public class UserGameInfoService {
 
 	public List<UserRankVO> rank(@RequestBody RankDTO rankDTO) {
 		List<UserGameInfo> userGameInfoList;
-		//胜场 or 胜率
-		if("winNum".equals(rankDTO.getTag())){
+		// 胜场 or 胜率
+		if ("winNum".equals(rankDTO.getTag())) {
 			userGameInfoList = userGameInfoMapper.listByWinNumDesc();
-		}else {
+		}
+		else {
 			userGameInfoList = userGameInfoMapper.listByWinPercentDesc();
 		}
 		if (CollUtil.isEmpty(userGameInfoList)) {
@@ -51,8 +52,8 @@ public class UserGameInfoService {
 			userRankVO.setWinNum(userGameInfo.getWinNum());
 			userRankVO.setTotalNum(userGameInfo.getTotalNum());
 			// 计算胜率，保留2位小数
-			BigDecimal divide = new BigDecimal(userGameInfo.getWinNum()).divide(
-					new BigDecimal(userGameInfo.getTotalNum()), 2, RoundingMode.HALF_UP);
+			BigDecimal divide = new BigDecimal(userGameInfo.getWinNum())
+				.divide(new BigDecimal(userGameInfo.getTotalNum()), 2, RoundingMode.HALF_UP);
 			userRankVO.setWinPercent(divide);
 			UserConverter.INSTANCE.fillUserRankVo(userRankVO, userMap.get(userGameInfo.getUid()));
 			list.add(userRankVO);

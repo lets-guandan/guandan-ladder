@@ -20,15 +20,15 @@ public interface UserGameInfoMapper extends ExtendMapper<UserGameInfo> {
 	 */
 	default List<UserGameInfo> listByWinNumDesc() {
 		LambdaQueryWrapper<UserGameInfo> wrapper = Wrappers.lambdaQuery(UserGameInfo.class)
-				.orderByDesc(UserGameInfo::getWinNum);
+			.orderByDesc(UserGameInfo::getWinNum);
 		return this.selectList(wrapper);
 	}
 
 	/**
 	 * 根据胜率倒叙
 	 */
-	@Select("select uid, win_num, total_num from user_game_info where total_num !=0 " +
-			"order by win_num/user_game_info.total_num desc")
+	@Select("select uid, win_num, total_num from user_game_info where total_num !=0 "
+			+ "order by win_num/user_game_info.total_num desc")
 	List<UserGameInfo> listByWinPercentDesc();
 
 	@Update("update user_game_info set win_num = win_num + 1, total_num = total_num + 1  where uid = #{uid1} or uid = #{uid2}")

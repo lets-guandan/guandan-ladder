@@ -36,8 +36,10 @@ public class GameController {
 	 */
 	@PostMapping("/record")
 	public R<Void> reportGameRecord(@RequestBody @Validated GameRecordDto gameRecordDto) {
-		Set<String> uids = Stream.of(gameRecordDto.getWinUid1(), gameRecordDto.getWinUid2(),
-				gameRecordDto.getLoseUid1(), gameRecordDto.getLoseUid2()).collect(Collectors.toSet());
+		Set<String> uids = Stream
+			.of(gameRecordDto.getWinUid1(), gameRecordDto.getWinUid2(), gameRecordDto.getLoseUid1(),
+					gameRecordDto.getLoseUid2())
+			.collect(Collectors.toSet());
 		Assert.isTrue(uids.size() == 4, "比赛记录的成员必须是 4 人： {}", uids);
 		gameService.saveRecord(gameRecordDto);
 		return R.ok();
@@ -69,7 +71,5 @@ public class GameController {
 		gameService.confirmRecord(confirmRecordDto);
 		return R.ok();
 	}
-
-
 
 }

@@ -42,5 +42,4 @@ public class GameRecordOutDto {
 	 */
 	private LocalDateTime gameTime;
 
-
 }

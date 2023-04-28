@@ -54,12 +54,17 @@ public class GameService {
 	 */
 	public List<GameRecordOutDto> gameList() {
 		String uid = SecurityContext.getUserId();
-		// 查询参与对局 且  等于15的表示 确认完成的
+		// 查询参与对局 且 等于15的表示 确认完成的
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
-				.eq(GameRecord::getUserConfirmFlagBits, 15)
-				.and(w -> w.eq(GameRecord::getWinUid1, uid).or().eq(GameRecord::getWinUid2, uid).or()
-						.eq(GameRecord::getLoseUid1, uid).or().eq(GameRecord::getLoseUid2, uid))
-				.orderByDesc(GameRecord::getGameTime);
+			.eq(GameRecord::getUserConfirmFlagBits, 15)
+			.and(w -> w.eq(GameRecord::getWinUid1, uid)
+				.or()
+				.eq(GameRecord::getWinUid2, uid)
+				.or()
+				.eq(GameRecord::getLoseUid1, uid)
+				.or()
+				.eq(GameRecord::getLoseUid2, uid))
+			.orderByDesc(GameRecord::getGameTime);
 		List<GameRecord> list = gameRecordMapper.selectList(wrapper);
 		if (list == null) {
 			return new ArrayList<>();
@@ -74,10 +79,15 @@ public class GameService {
 		String uid = SecurityContext.getUserId();
 		// 查询参与对局 且 不等于15的表示未确认完成的
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
-				.ne(GameRecord::getUserConfirmFlagBits, 15)
-				.and(w -> w.eq(GameRecord::getWinUid1, uid).or().eq(GameRecord::getWinUid2, uid).or()
-						.eq(GameRecord::getLoseUid1, uid).or().eq(GameRecord::getLoseUid2, uid))
-				.orderByDesc(GameRecord::getGameTime);
+			.ne(GameRecord::getUserConfirmFlagBits, 15)
+			.and(w -> w.eq(GameRecord::getWinUid1, uid)
+				.or()
+				.eq(GameRecord::getWinUid2, uid)
+				.or()
+				.eq(GameRecord::getLoseUid1, uid)
+				.or()
+				.eq(GameRecord::getLoseUid2, uid))
+			.orderByDesc(GameRecord::getGameTime);
 		List<GameRecord> list = gameRecordMapper.selectList(wrapper);
 		if (list == null) {
 			return new ArrayList<>();

@@ -6,7 +6,6 @@ import com.hccake.ballcat.common.model.result.R;
 import com.hccake.ballcat.common.util.JsonUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,8 +29,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 	private static final Set<String> IGNORE_PATH_SET = Stream.of("/", "/login").collect(Collectors.toSet());
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest servletRequest, @NotNull HttpServletResponse servletResponse,
-			@NotNull FilterChain chain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest servletRequest, HttpServletResponse servletResponse,
+			FilterChain chain) throws ServletException, IOException {
 		String requestUri = servletRequest.getServletPath();
 
 		if (IGNORE_PATH_SET.contains(requestUri)) {
@@ -65,13 +64,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 		try {
 			SecurityContext.setContext(jwtClaimsSet);
 			chain.doFilter(servletRequest, servletResponse);
-		} finally {
+		}
+		finally {
 			// 清除本地线程 避免线程复用带来错误
 			SecurityContext.clear();
 		}
 	}
 
-	private static void responseError(@NotNull HttpServletResponse response) throws IOException {
+	private static void responseError(HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setHeader("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
 		R<Void> failedResult = R.failed(1000, "未获取到登录信息，请登录");

@@ -33,8 +33,8 @@ public class JwtUtils {
 		// 设置JWT的载荷，即需要传递的数据，比如用户ID、角色、过期时间等
 		long currentTimeMillis = System.currentTimeMillis();
 		JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder().subject(sub)
-				.expirationTime(new Date(currentTimeMillis + 7 * 24 * 60 * 60 * 1000)) // 设置过期时间
-				.issueTime(new Date(currentTimeMillis));// 设置签发时间
+			.expirationTime(new Date(currentTimeMillis + 7 * 24 * 60 * 60 * 1000)) // 设置过期时间
+			.issueTime(new Date(currentTimeMillis));// 设置签发时间
 		if (!CollectionUtils.isEmpty(customClaims)) {
 			for (Map.Entry<String, Object> entry : customClaims.entrySet()) {
 				builder.claim(entry.getKey(), entry.getValue());
