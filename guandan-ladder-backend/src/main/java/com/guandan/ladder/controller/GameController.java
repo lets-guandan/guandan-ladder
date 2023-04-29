@@ -67,6 +67,7 @@ public class GameController {
 	public R<List<GameRecordVO>> unconfirmedRecordList(@RequestParam("myOrAll") Integer myOrAll) {
 		UnConfirmTypeEnum unConfirmTypeEnum = UnConfirmTypeEnum.valueOf(myOrAll);
 		List<GameRecord> gameRecords = gameService.unconfirmedRecordList(unConfirmTypeEnum);
+
 		Set<String> uids = new HashSet<>();
 		for (GameRecord gameRecord : gameRecords) {
 			uids.add(gameRecord.getWinUid1());
