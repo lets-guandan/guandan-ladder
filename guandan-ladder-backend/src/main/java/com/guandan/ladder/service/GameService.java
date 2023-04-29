@@ -1,6 +1,8 @@
 package com.guandan.ladder.service;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.lang.Assert;
 import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.mapper.GameRecordMapper;
@@ -15,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +92,9 @@ public class GameService {
 		int i = gameRecordMapper.confirmRecord(userId, confirmRecordDto.getRecordId());
 		if (i > 0) {
 			GameRecord gameRecord = gameRecordMapper.selectById(confirmRecordDto.getRecordId());
+			// 对战48小时内需确认  另要置为无效状态 不能查出 todo
+			boolean before = gameRecord.getGameTime().plusHours(48).isBefore(LocalDateTime.now());
+			Assert.isTrue(before, "战绩确认时效是48小时，此局对战时间-{}", gameRecord.getGameTime());
 			// 如果都确认了 则记录到历史战绩
 			if (gameRecord != null && 15 == gameRecord.getUserConfirmFlagBits()) {
 				userGameInfoMapper.incrWinNumAndTotalNum(gameRecord.getWinUid1(), gameRecord.getWinUid2());
