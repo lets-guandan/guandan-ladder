@@ -1,5 +1,6 @@
 package com.guandan.ladder.service;
 
+import cn.hutool.core.lang.Assert;
 import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.mapper.GameRecordMapper;
 import com.guandan.ladder.mapper.UserGameInfoMapper;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,7 +62,7 @@ public class GameService {
 
 	/**
 	 * 待确认战绩列表
-	 * @param unConfirmTypeEnum 我的待确认 或者 所有待确认
+	 * @param unConfirmTypeEnum 待确认查询范围枚举
 	 */
 	public List<GameRecord> unconfirmedRecordList(UnConfirmTypeEnum unConfirmTypeEnum) {
 		String uid = SecurityContext.getUserId();
@@ -84,10 +86,15 @@ public class GameService {
 		String userId = SecurityContext.getUserId();
 		gameRecordMapper.confirmRecord(userId, confirmRecordDto.getRecordId());
 		GameRecord gameRecord = gameRecordMapper.selectById(confirmRecordDto.getRecordId());
-		// 如果都确认了 则记录到历史战绩
-		if (gameRecord != null && 15 == gameRecord.getUserConfirmFlagBits()) {
-			userGameInfoMapper.incrWinNumAndTotalNum(gameRecord.getWinUid1(), gameRecord.getWinUid2());
-			userGameInfoMapper.incrTotalNum(gameRecord.getLoseUid1(), gameRecord.getLoseUid2());
+		if(gameRecord != null){
+			// 对战48小时内需确认  另要置为无效状态 不能查出 todo
+			boolean before = gameRecord.getGameTime().plusHours(48).isBefore(LocalDateTime.now());
+			Assert.isTrue(before, "战绩确认时效是48小时，此局对战时间-{}", gameRecord.getGameTime());
+			// 如果都确认了 则记录到历史战绩
+			if (15 == gameRecord.getUserConfirmFlagBits()) {
+				userGameInfoMapper.incrWinNumAndTotalNum(gameRecord.getWinUid1(), gameRecord.getWinUid2());
+				userGameInfoMapper.incrTotalNum(gameRecord.getLoseUid1(), gameRecord.getLoseUid2());
+			}
 		}
 	}
 

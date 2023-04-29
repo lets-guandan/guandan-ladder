@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 待确认归属范围枚举
+ * 待确认查询范围枚举
  * @author hushaoming
  *  2023/4/29 13:47
  */
@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UnConfirmTypeEnum {
 
-	MY(1, "我的待确认"),
+	MY(1, "待我确认的对局"),
 
-	ALL(2, "所有待确认");
+	ALL(2, "与我相关的对局待确认");
 
 	private final Integer value;
 

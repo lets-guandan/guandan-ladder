@@ -60,7 +60,7 @@ public class GameController {
 
 	/**
 	 * 待确认战绩列表
-	 * @param myOrAll 我的待确认 或者 所有待确认
+	 * @param myOrAll 待确认查询范围
 	 */
 	@GetMapping("/record/unconfirmed")
 	public R<List<GameRecordVO>> unconfirmedRecordList(@RequestParam("myOrAll") Integer myOrAll) {
