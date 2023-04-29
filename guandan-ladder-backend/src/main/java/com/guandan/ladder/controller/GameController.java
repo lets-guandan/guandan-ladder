@@ -1,6 +1,7 @@
 package com.guandan.ladder.controller;
 
 import cn.hutool.core.lang.Assert;
+import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.model.convert.GameConverter;
 import com.guandan.ladder.model.dto.ConfirmRecordDto;
 import com.guandan.ladder.model.dto.GameRecordDto;
@@ -59,10 +60,12 @@ public class GameController {
 
 	/**
 	 * 待确认战绩列表
+	 * @param myOrAll 我的待确认 或者 所有待确认
 	 */
 	@GetMapping("/record/unconfirmed")
-	public R<List<GameRecordVO>> unconfirmedRecordList() {
-		List<GameRecord> gameRecords = gameService.unconfirmedRecordList();
+	public R<List<GameRecordVO>> unconfirmedRecordList(@RequestParam("myOrAll") Integer myOrAll) {
+		UnConfirmTypeEnum unConfirmTypeEnum = UnConfirmTypeEnum.valueOf(myOrAll);
+		List<GameRecord> gameRecords = gameService.unconfirmedRecordList(unConfirmTypeEnum);
 
 		Set<String> uids = new HashSet<>();
 		for (GameRecord gameRecord : gameRecords) {

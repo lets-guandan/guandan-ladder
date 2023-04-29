@@ -1,5 +1,6 @@
 package com.guandan.ladder.service;
 
+import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.mapper.GameRecordMapper;
 import com.guandan.ladder.mapper.UserGameInfoMapper;
 import com.guandan.ladder.model.convert.GameConverter;
@@ -59,14 +60,19 @@ public class GameService {
 
 	/**
 	 * 待确认战绩列表
+	 * @param unConfirmTypeEnum 我的待确认 或者 所有待确认
 	 */
-	public List<GameRecord> unconfirmedRecordList() {
+	public List<GameRecord> unconfirmedRecordList(UnConfirmTypeEnum unConfirmTypeEnum) {
 		String uid = SecurityContext.getUserId();
-		List<GameRecord> list = gameRecordMapper.selectUnconfirmedList(uid);
-		if (list == null) {
-			return new ArrayList<>();
+		// 查询与当前用户有关的 且 自己或者其他人还没确认的 战绩
+		List<GameRecord> list;
+		if (UnConfirmTypeEnum.MY.equals(unConfirmTypeEnum)) {
+			list = gameRecordMapper.selectUnconfirmedList(uid);
+		} else {
+			// 空或者ALL查所有人的
+			list = gameRecordMapper.selectInValidRecords(uid);
 		}
-		return list;
+		return list == null ? new ArrayList<>() : list;
 	}
 
 	/**
