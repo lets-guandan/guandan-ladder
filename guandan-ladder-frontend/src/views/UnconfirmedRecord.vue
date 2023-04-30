@@ -11,6 +11,25 @@
   <!--    </v-list-item>-->
   <!--  </v-list>-->
 
+<!--  增加二进制结果展示；增加button组合按钮 待我确认|| 与我有关 请求接口getUnconfirmedRecordApi传1和2-->
+<!--  <template>-->
+<!--    <v-btn-toggle v-model="toggle" mandatory>-->
+<!--      <v-btn :value="1">按钮1</v-btn>-->
+<!--      <v-btn :value="2">按钮2</v-btn>-->
+<!--      <v-btn :value="3">按钮3</v-btn>-->
+<!--    </v-btn-toggle>-->
+<!--  </template>-->
+
+<!--  <script>-->
+<!--    export default {-->
+<!--      data() {-->
+<!--        return {-->
+<!--          toggle: 1-->
+<!--        };-->
+<!--      }-->
+<!--    };-->
+<!--  </script>-->
+
   <div class="score-board" v-if="items.length > 0">
     <div class="score-item" v-for="item in items" :key="item.id">
       <div class="score-time">{{ item.gameTime }}</div>
