@@ -17,7 +17,7 @@
 					when #{uid} = lose_uid1 then 2|user_confirm_flag_bits
 					when #{uid} = lose_uid2 then 1|user_confirm_flag_bits
 					else user_confirm_flag_bits end
-		where id = #{id}
+		where id = #{id} and user_confirm_flag_bits != 15
 	</update>
 
 	<select id="selectUnconfirmedList" resultType="com.guandan.ladder.model.entity.GameRecord">
