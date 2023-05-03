@@ -92,7 +92,7 @@ public class GameController {
 	}
 
 	/**
-	 * 战绩确认
+	 * 战绩确认  4人都确认才生效
 	 */
 	@PostMapping("/confirm-record")
 	public R<Void> confirmRecord(@RequestBody @Validated ConfirmRecordDto confirmRecordDto) {
