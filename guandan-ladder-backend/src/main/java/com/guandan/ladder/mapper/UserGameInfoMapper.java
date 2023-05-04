@@ -1,7 +1,5 @@
 package com.guandan.ladder.mapper;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.guandan.ladder.model.entity.UserGameInfo;
 import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,18 +16,15 @@ public interface UserGameInfoMapper extends ExtendMapper<UserGameInfo> {
 	/**
 	 * 根据胜场倒叙
 	 */
-	default List<UserGameInfo> listByWinNumDesc() {
-		LambdaQueryWrapper<UserGameInfo> wrapper = Wrappers.lambdaQuery(UserGameInfo.class)
-			.ne(UserGameInfo::getTotalNum, 0)
-			.orderByDesc(UserGameInfo::getWinNum);
-		return this.selectList(wrapper);
-	}
+	@Select("select uid, win_num, total_num from user_game_info where total_num !=0 "
+			+ "order by win_num, win_num/user_game_info.total_num desc")
+	List<UserGameInfo> listByWinNumDesc();
 
 	/**
 	 * 根据胜率倒叙
 	 */
 	@Select("select uid, win_num, total_num from user_game_info where total_num !=0 "
-			+ "order by win_num/user_game_info.total_num desc")
+			+ "order by win_num/user_game_info.total_num, win_num desc")
 	List<UserGameInfo> listByWinPercentDesc();
 
 	@Update("update user_game_info set win_num = win_num + 1, total_num = total_num + 1  where uid = #{uid1} or uid = #{uid2}")
