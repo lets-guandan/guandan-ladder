@@ -12,23 +12,10 @@
   <!--  </v-list>-->
 
 <!--  增加二进制结果展示；增加button组合按钮 待我确认|| 与我有关 请求接口getUnconfirmedRecordApi传1和2-->
-<!--  <template>-->
-<!--    <v-btn-toggle v-model="toggle" mandatory>-->
-<!--      <v-btn :value="1">按钮1</v-btn>-->
-<!--      <v-btn :value="2">按钮2</v-btn>-->
-<!--      <v-btn :value="3">按钮3</v-btn>-->
-<!--    </v-btn-toggle>-->
-<!--  </template>-->
-
-<!--  <script>-->
-<!--    export default {-->
-<!--      data() {-->
-<!--        return {-->
-<!--          toggle: 1-->
-<!--        };-->
-<!--      }-->
-<!--    };-->
-<!--  </script>-->
+    <v-btn-toggle class="score-btn" >
+      <v-btn :value="1" @click="initUnconfirmedRecords(1)" > 待我确认 </v-btn>
+      <v-btn :value="2" @click="initUnconfirmedRecords(2)">  与我有关 </v-btn>
+    </v-btn-toggle>
 
   <div class="score-board" v-if="items.length > 0">
     <div class="score-item" v-for="item in items" :key="item.id">
@@ -39,14 +26,14 @@
         <div class="score-loser">{{ item.loseNickname1 }}</div>
         <div class="score-loser">{{ item.loseNickname2 }}</div>
       </div>
-      <div class="score-confirm" @click="confirm(item)">
+        <div class="score-confirm" @click="confirm(item)">
         <v-btn>确认</v-btn>
       </div>
     </div>
   </div>
 
   <div v-else>
-    暂无待确认战绩列表
+    暂无待生效战绩列表
   </div>
 </template>
 
@@ -56,21 +43,21 @@ import {confirmRecordApi, getUnconfirmedRecordApi, isSuccess} from "@/api";
 
 const items = ref([])
 
-function initUnconfirmedRecords() {
-  getUnconfirmedRecordApi().then(res => {
+function initUnconfirmedRecords(req) {
+  getUnconfirmedRecordApi(req).then(res => {
     items.value = res.data as any
   })
 }
 
 // 初始化
-initUnconfirmedRecords()
+initUnconfirmedRecords(2)
 
 function confirm(item) {
   confirmRecordApi(item.id)
     .then(res => {
       if (isSuccess(res)) {
+        initUnconfirmedRecords(2)
         alert('战局确认成功！')
-        initUnconfirmedRecords()
       } else {
         alert('战局确认失败！' + res.message)
       }
@@ -148,4 +135,10 @@ export default {
 .score-confirm button:hover {
   background-color: #388e3c;
 }
+.score-btn {
+  display: flex;
+  justify-content: center;
+  background-color: #8ac7b0
+}
+
 </style>

@@ -1,6 +1,7 @@
 package com.guandan.ladder.controller;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.model.convert.GameConverter;
 import com.guandan.ladder.model.dto.ConfirmRecordDto;
@@ -9,12 +10,12 @@ import com.guandan.ladder.model.dto.GameRecordOutDto;
 import com.guandan.ladder.model.dto.GameRecordVO;
 import com.guandan.ladder.model.entity.GameRecord;
 import com.guandan.ladder.model.entity.User;
+import com.guandan.ladder.security.SecurityContext;
 import com.guandan.ladder.service.GameService;
 import com.guandan.ladder.service.UserService;
 import com.hccake.ballcat.common.model.result.R;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,24 +51,25 @@ public class GameController {
 	}
 
 	/**
-	 * 历史战绩
+	 * 历史战绩 传空就是查自己
 	 * @param uid 用户id
 	 */
 	@GetMapping("/list")
 	public R<List<GameRecordOutDto>> gameList(@RequestParam("uid") String uid) {
+		uid = StrUtil.isBlank(uid) ? SecurityContext.getUserId() : uid;
 		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList(uid);
 		return R.ok(gameRecordOutDtoList);
 	}
 
 	/**
-	 * 待确认战绩列表
+	 * 待生效战绩列表
 	 * @param myOrAll 待确认查询范围
 	 */
 	@GetMapping("/record/unconfirmed")
 	public R<List<GameRecordVO>> unconfirmedRecordList(@RequestParam("myOrAll") Integer myOrAll) {
 		UnConfirmTypeEnum unConfirmTypeEnum = UnConfirmTypeEnum.valueOf(myOrAll);
 		List<GameRecord> gameRecords = gameService.unconfirmedRecordList(unConfirmTypeEnum);
-
+		log.info("待生效列表，{},{}", myOrAll, gameRecords);
 		Set<String> uids = new HashSet<>();
 		for (GameRecord gameRecord : gameRecords) {
 			uids.add(gameRecord.getWinUid1());
@@ -81,10 +83,11 @@ public class GameController {
 		List<GameRecordVO> result = new ArrayList<>(gameRecords.size());
 		for (GameRecord gameRecord : gameRecords) {
 			GameRecordVO gameRecordVO = GameConverter.INSTANCE.recordEntityToVO(gameRecord);
-			gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname());
-			gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname());
-			gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname());
-			gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname());
+			String flag = gameRecordVO.getUserConfirmFlag();
+			gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname() + " | " + flag.charAt(0));
+			gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname() + " | " + flag.charAt(1));
+			gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname() + " | " + flag.charAt(2));
+			gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname() + " | " + flag.charAt(3));
 			result.add(gameRecordVO);
 		}
 
