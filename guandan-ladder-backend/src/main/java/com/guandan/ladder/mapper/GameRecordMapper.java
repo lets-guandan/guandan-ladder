@@ -39,6 +39,26 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 	}
 
 	/**
+	 * 查询与当前用户有关的 且 自己或者其他人还没确认的  战绩
+	 * @param uid 当前用户id
+	 * @return List<GameRecord>
+	 */
+	default List<GameRecord> selectInValidRecords(String uid) {
+		// 查询参与对局 且 不等于15的表示 确认完成的
+		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
+				.ne(GameRecord::getUserConfirmFlagBits, 15)
+				.and(w -> w.eq(GameRecord::getWinUid1, uid)
+						.or()
+						.eq(GameRecord::getWinUid2, uid)
+						.or()
+						.eq(GameRecord::getLoseUid1, uid)
+						.or()
+						.eq(GameRecord::getLoseUid2, uid))
+				.orderByDesc(GameRecord::getGameTime);
+		return this.selectList(wrapper);
+	}
+
+	/**
 	 * 查询前用户的未确认列表
 	 * @param uid 当前用户id
 	 * @return List<GameRecord>

@@ -5,7 +5,7 @@
 [![springboot](https://img.shields.io/badge/springboot-2.3.0.RELEASE-orange.svg)](https://spring.io/projects/spring-boot)
 
 ## 项目介绍
-记录每一次紧张刺激的掼蛋战绩，也是学习和练习前后端编程技术的项目；  登录访问地址：www.
+记录每一次紧张刺激的掼蛋战绩，也是学习和练习前后端编程技术的项目；  登录访问地址：http://guandan.ballcat.cn/
 ## 文档地址
 - [swagger]
 
@@ -22,7 +22,8 @@
 - 数据库mysql
 
 ### 待办：
-- 照片上传
+- 当时打牌照片上传
+- 战绩提交消息推送全员留存记录
 
 #
 
