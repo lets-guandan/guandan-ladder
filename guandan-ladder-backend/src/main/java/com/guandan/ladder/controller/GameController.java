@@ -14,6 +14,7 @@ import com.guandan.ladder.service.UserService;
 import com.hccake.ballcat.common.model.result.R;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +67,6 @@ public class GameController {
 	public R<List<GameRecordVO>> unconfirmedRecordList(@RequestParam("myOrAll") Integer myOrAll) {
 		UnConfirmTypeEnum unConfirmTypeEnum = UnConfirmTypeEnum.valueOf(myOrAll);
 		List<GameRecord> gameRecords = gameService.unconfirmedRecordList(unConfirmTypeEnum);
-
 		Set<String> uids = new HashSet<>();
 		for (GameRecord gameRecord : gameRecords) {
 			uids.add(gameRecord.getWinUid1());

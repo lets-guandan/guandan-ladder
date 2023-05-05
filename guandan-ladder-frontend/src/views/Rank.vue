@@ -1,4 +1,8 @@
 <template>
+  <v-tabs color="deep-orange" align-tabs="center">
+    <v-tab width="50%" @click="fetchRankList(RankListTypeEnum.WIN_RATE)">胜率榜</v-tab>
+    <v-tab width="50%" @click="fetchRankList(RankListTypeEnum.WIN_COUNT)">胜场榜</v-tab>
+  </v-tabs>
   <v-list :lines="'three'" class="rank">
     <template v-for="(item, index) in data" :key="item.uid">
       <v-list-item
@@ -37,19 +41,26 @@ import {useRouter} from "vue-router";
 
 const router = useRouter();
 const data = ref<UserRankVO[]>()
-rankListApi(RankListTypeEnum.WIN_COUNT).then(res => {
-  if (res.code === 1000) {
-    alert(res.message);
-    router.replace("/login");
-    return
-  }
-  data.value = res.data
-})
 
+/* 转换为百分比 */
 function toPercent(num: number, total: number) {
   return total <= 0 ? "0%" : (Math.round(num / total * 1000) / 10.00) + "%";
 }
 
+/* 拉取排行数据 */
+function fetchRankList(rankType) {
+  rankListApi(rankType).then(res => {
+    if (res.code === 1000) {
+      alert(res.message);
+      router.replace("/login");
+      return
+    }
+    data.value = res.data
+  })
+}
+
+// 初始化页面数据
+fetchRankList(RankListTypeEnum.WIN_RATE)
 
 </script>
 

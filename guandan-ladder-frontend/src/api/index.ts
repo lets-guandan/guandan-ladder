@@ -38,3 +38,10 @@ export function getUnconfirmedRecordApi() {
 export function confirmRecordApi(recordId: number) {
   return httpClient.post<ApiResult>('/game/confirm-record', {recordId: recordId})
 }
+
+
+
+/** 获取历史战绩列表 */
+export function historyGameRecordApi(uid: number) {
+  return httpClient.post<ApiResult>('/game/list', {uid: uid})
+}

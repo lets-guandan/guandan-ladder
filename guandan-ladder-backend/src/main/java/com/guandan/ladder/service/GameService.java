@@ -84,18 +84,14 @@ public class GameService {
 	@Transactional(rollbackFor = Exception.class)
 	public void confirmRecord(ConfirmRecordDto confirmRecordDto) {
 		String userId = SecurityContext.getUserId();
-		gameRecordMapper.confirmRecord(userId, confirmRecordDto.getRecordId());
-		GameRecord gameRecord = gameRecordMapper.selectById(confirmRecordDto.getRecordId());
-		if(gameRecord != null){
-			// 对战48小时内需确认  另要置为无效状态 不能查出 todo
-			boolean before = gameRecord.getGameTime().plusHours(48).isBefore(LocalDateTime.now());
-			Assert.isTrue(before, "战绩确认时效是48小时，此局对战时间-{}", gameRecord.getGameTime());
+		int i = gameRecordMapper.confirmRecord(userId, confirmRecordDto.getRecordId());
+		if (i > 0) {
+			GameRecord gameRecord = gameRecordMapper.selectById(confirmRecordDto.getRecordId());
 			// 如果都确认了 则记录到历史战绩
-			if (15 == gameRecord.getUserConfirmFlagBits()) {
+			if (gameRecord != null && 15 == gameRecord.getUserConfirmFlagBits()) {
 				userGameInfoMapper.incrWinNumAndTotalNum(gameRecord.getWinUid1(), gameRecord.getWinUid2());
 				userGameInfoMapper.incrTotalNum(gameRecord.getLoseUid1(), gameRecord.getLoseUid2());
 			}
-		}
 	}
-
+  }
 }
