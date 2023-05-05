@@ -13,6 +13,7 @@ import com.guandan.ladder.service.UserService;
 import com.hccake.ballcat.common.model.result.R;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,6 +63,9 @@ public class GameController {
 	@GetMapping("/record/unconfirmed")
 	public R<List<GameRecordVO>> unconfirmedRecordList() {
 		List<GameRecord> gameRecords = gameService.unconfirmedRecordList();
+		if (CollectionUtils.isEmpty(gameRecords)) {
+			return R.ok(new ArrayList<>());
+		}
 
 		Set<String> uids = new HashSet<>();
 		for (GameRecord gameRecord : gameRecords) {
