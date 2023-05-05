@@ -77,7 +77,7 @@ public class GameService {
 	public void confirmRecord(ConfirmRecordDto confirmRecordDto) {
 		String userId = SecurityContext.getUserId();
 		int i = gameRecordMapper.confirmRecord(userId, confirmRecordDto.getRecordId());
-		if(i > 0){
+		if (i > 0) {
 			GameRecord gameRecord = gameRecordMapper.selectById(confirmRecordDto.getRecordId());
 			// 如果都确认了 则记录到历史战绩
 			if (gameRecord != null && 15 == gameRecord.getUserConfirmFlagBits()) {
