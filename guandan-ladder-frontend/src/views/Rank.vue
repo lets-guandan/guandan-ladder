@@ -1,4 +1,14 @@
 <template>
+  <v-card>
+
+  </v-card>
+  <v-tabs
+    v-model="tab"
+    bg-color="green-darken-3"
+  >
+    <v-tab color="deep-orange" value="2" width="50%" @click="switchTab()">胜率榜</v-tab>
+    <v-tab color="deep-orange" value="1" width="50%" @click="switchTab()">胜场榜</v-tab>
+  </v-tabs>
   <v-list :lines="'three'" class="rank">
     <template v-for="(item, index) in data" :key="item.uid">
       <v-list-item
@@ -37,14 +47,22 @@ import {useRouter} from "vue-router";
 
 const router = useRouter();
 const data = ref<UserRankVO[]>()
-rankListApi(RankListTypeEnum.WIN_COUNT).then(res => {
-  if (res.code === 1000) {
-    alert(res.message);
-    router.replace("/login");
-    return
-  }
-  data.value = res.data
-})
+const tab = ref<RankListTypeEnum>(RankListTypeEnum.WIN_RATE)
+// 初始化页面数据
+switchTab()
+
+// tab切换方法
+function switchTab() {
+  rankListApi(tab.value).then(res => {
+    if (res.code === 1000) {
+      alert(res.message);
+      router.replace("/login");
+      return
+    }
+    data.value = res.data
+  })
+}
+
 
 function toPercent(num: number, total: number) {
   return total <= 0 ? "0%" : (Math.round(num / total * 1000) / 10.00) + "%";
