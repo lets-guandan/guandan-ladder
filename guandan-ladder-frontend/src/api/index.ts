@@ -30,8 +30,10 @@ export function reportGameRecordApi(gameRecord: GameRecordDTO) {
 
 
 /** 获取待确认战局记录 */
-export function getUnconfirmedRecordApi() {
-  return httpClient.get<ApiResult>('/game/record/unconfirmed')
+export function getUnconfirmedRecordApi(myOrAll: number) {
+  return httpClient.get<ApiResult>('/game/record/unconfirmed', {
+    params: {myOrAll: myOrAll}
+  })
 }
 
 /** 确认战局记录 */

@@ -33,7 +33,7 @@ const isShow = ref(false)
 
 const items = [
   {
-    title: '待确认战绩',
+    title: '待生效战绩',
     path: '/record/unconfirmed',
   },
   {
