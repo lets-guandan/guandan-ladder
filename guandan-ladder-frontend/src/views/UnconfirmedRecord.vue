@@ -21,11 +21,20 @@
     <div class="score-item" v-for="item in items" :key="item.id">
       <div class="score-time">{{ item.gameTime }}</div>
       <div class="score-players">
-        <div class="score-winner">{{ item.winNickname1 }}</div>
-        <div class="score-winner">{{ item.winNickname2 }}</div>
-        <div class="score-loser">{{ item.loseNickname1 }}</div>
-        <div class="score-loser">{{ item.loseNickname2 }}</div>
+        <v-badge bordered dot :color="item.winUid1Flag >0 ? 'success': 'white'">
+          <div class="score-winner">{{ item.winNickname1 }}</div>
+        </v-badge>
+        <v-badge bordered dot :color="item.winUid2Flag >0 ? 'success': 'white'">
+          <div class="score-winner">{{ item.winNickname2 }}</div>
+        </v-badge>
+        <v-badge bordered dot :color="item.loseUid1Flag >0 ? 'success': 'white'">
+          <div class="score-loser">{{ item.loseNickname1 }}</div>
+        </v-badge>
+        <v-badge bordered dot :color="item.loseUid2Flag >0 ? 'success': 'white'">
+          <div class="score-loser">{{ item.loseNickname2 }}</div>
+        </v-badge>
       </div>
+
         <div class="score-confirm" @click="confirm(item)">
         <v-btn>确认</v-btn>
       </div>
@@ -42,10 +51,11 @@ import {ref} from "vue";
 import {confirmRecordApi, getUnconfirmedRecordApi, isSuccess} from "@/api";
 
 const items = ref([])
-
+const ss= ref('s')
 function initUnconfirmedRecords(req) {
   getUnconfirmedRecordApi(req).then(res => {
     items.value = res.data as any
+
   })
 }
 
@@ -65,6 +75,11 @@ function confirm(item) {
     .catch(e => {
       alert('战局确认异常！' + e.message)
     })
+}
+
+
+function  badgeColor() {
+    return this.count > 0 ? 'red' : 'green'
 }
 </script>
 

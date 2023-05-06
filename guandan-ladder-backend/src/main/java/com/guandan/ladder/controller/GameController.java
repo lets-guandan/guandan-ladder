@@ -1,7 +1,6 @@
 package com.guandan.ladder.controller;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.StrUtil;
 import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.model.convert.GameConverter;
 import com.guandan.ladder.model.dto.ConfirmRecordDto;
@@ -42,27 +41,37 @@ public class GameController {
 	@PostMapping("/record")
 	public R<Void> reportGameRecord(@RequestBody @Validated GameRecordDto gameRecordDto) {
 		Set<String> uids = Stream
-			.of(gameRecordDto.getWinUid1(), gameRecordDto.getWinUid2(), gameRecordDto.getLoseUid1(),
-					gameRecordDto.getLoseUid2())
-			.collect(Collectors.toSet());
+				.of(gameRecordDto.getWinUid1(), gameRecordDto.getWinUid2(), gameRecordDto.getLoseUid1(),
+						gameRecordDto.getLoseUid2())
+				.collect(Collectors.toSet());
 		Assert.isTrue(uids.size() == 4, "比赛记录的成员必须是 4 人： {}", uids);
 		gameService.saveRecord(gameRecordDto);
 		return R.ok();
 	}
 
 	/**
-	 * 历史战绩 传空就是查自己
+	 * 历史战绩
+	 *
 	 * @param uid 用户id
 	 */
 	@GetMapping("/list")
 	public R<List<GameRecordOutDto>> gameList(@RequestParam("uid") String uid) {
-		uid = StrUtil.isBlank(uid) ? SecurityContext.getUserId() : uid;
 		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList(uid);
 		return R.ok(gameRecordOutDtoList);
 	}
 
 	/**
+	 * 我的历史战绩
+	 */
+	@GetMapping("/myList")
+	public R<List<GameRecordOutDto>> gameMyList() {
+		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList(SecurityContext.getUserId());
+		return R.ok(gameRecordOutDtoList);
+	}
+
+	/**
 	 * 待生效战绩列表
+	 *
 	 * @param myOrAll 待确认查询范围
 	 */
 	@GetMapping("/record/unconfirmed")
@@ -83,16 +92,22 @@ public class GameController {
 		List<GameRecordVO> result = new ArrayList<>(gameRecords.size());
 		for (GameRecord gameRecord : gameRecords) {
 			GameRecordVO gameRecordVO = GameConverter.INSTANCE.recordEntityToVO(gameRecord);
-			String flag = gameRecordVO.getUserConfirmFlag();
-			gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname() + " | " + flag.charAt(0));
-			gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname() + " | " + flag.charAt(1));
-			gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname() + " | " + flag.charAt(2));
-			gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname() + " | " + flag.charAt(3));
+			// 不足4位的二进制补成4位
+			String flag = String.format("%4s", gameRecordVO.getUserConfirmFlag()).replace(' ', '0');
+			gameRecordVO.setWinUid1Flag(flag.charAt(0));
+			gameRecordVO.setWinUid2Flag(flag.charAt(1));
+			gameRecordVO.setLoseUid1Flag(flag.charAt(2));
+			gameRecordVO.setLoseUid2Flag(flag.charAt(3));
+			gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname());
+			gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname());
+			gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname());
+			gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname());
 			result.add(gameRecordVO);
 		}
 
 		return R.ok(result);
 	}
+
 
 	/**
 	 * 战绩确认  4人都确认才生效
