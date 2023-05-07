@@ -3,8 +3,10 @@ import {ref} from "vue";
 import {isSuccess, userInfoApi} from "@/api";
 import {UserVO} from "@/api/types";
 import LogoutDialog from "@/components/LogoutDialog.vue";
+import UpdatePasswordDialog from "@/components/UpdatePasswordDialog.vue";
 
 const logoutDialog = ref()
+const updatePasswordDialog = ref()
 
 const user = ref<UserVO>({
   uid: "",
@@ -39,7 +41,7 @@ userInfoApi().then(res => {
     </template>
     <v-list>
       <v-list-item>
-        <v-list-item-title>修改密码</v-list-item-title>
+        <v-list-item-title @click="() => updatePasswordDialog.open()">修改密码</v-list-item-title>
       </v-list-item>
       <v-divider />
       <v-list-item>
@@ -48,8 +50,11 @@ userInfoApi().then(res => {
     </v-list>
   </v-menu>
 
+  <updatePassword-dialog ref="updatePasswordDialog"/>
   <logout-dialog ref="logoutDialog"/>
 </template>
+
+
 
 <style scoped>
 

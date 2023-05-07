@@ -88,6 +88,14 @@ export interface LoginVO {
   password: string
 }
 
+/**
+ * 修改密码参数对象
+ */
+export interface UpdatePasswordVO {
+  oldPassword: string,
+  newPassword: string
+}
+
 
 /**
  * 排行榜类型枚举

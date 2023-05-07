@@ -1,5 +1,5 @@
 import type {ApiResult, LoginVO} from '@/api/types'
-import {GameRecordDTO, UserRankVO, UserVO} from "@/api/types";
+import {GameRecordDTO, UpdatePasswordVO, UserRankVO, UserVO} from "@/api/types";
 import httpClient from "@/utils/axios";
 
 export const isSuccess = (result: ApiResult) => {
@@ -52,4 +52,9 @@ export function confirmRecordApi(recordId: number) {
 /** 获取历史战绩列表 */
 export function historyGameRecordApi(uid: number) {
   return httpClient.post<ApiResult>('/game/list', {uid: uid})
+}
+
+/** 修改密码 */
+export function updatePassword(updatePasswordVO: UpdatePasswordVO) {
+  return httpClient.post<ApiResult>('/user/updatePassword', updatePasswordVO)
 }

@@ -44,6 +44,10 @@
   <div v-else>
     暂无待生效战绩列表
   </div>
+
+  <div>
+
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -52,6 +56,7 @@ import {confirmRecordApi, getUnconfirmedRecordApi, isSuccess} from "@/api";
 
 const items = ref([])
 const toggleSelect = ref('2')
+
 function initUnconfirmedRecords(req) {
   getUnconfirmedRecordApi(req).then(res => {
     items.value = res.data as any
@@ -78,9 +83,7 @@ function confirm(item) {
 }
 
 
-function  badgeColor() {
-    return this.count > 0 ? 'red' : 'green'
-}
+
 </script>
 
 <script lang="ts">

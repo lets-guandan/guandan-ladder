@@ -6,6 +6,7 @@ import com.guandan.ladder.model.entity.User;
 import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,5 +28,8 @@ public interface UserMapper extends ExtendMapper<User> {
 		LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery(User.class).eq(User::getUid, uid);
 		return this.selectOne(wrapper);
 	}
+
+	@Update("update user set password = #{password}, updated_time= NOW()  where uid = #{uid}")
+	void updatePassword(@Param("uid") String uid, @Param("password") String password);
 
 }
