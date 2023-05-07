@@ -12,9 +12,9 @@
   <!--  </v-list>-->
 
 <!--  增加二进制结果展示；增加button组合按钮 待我确认|| 与我有关 请求接口getUnconfirmedRecordApi传1和2-->
-    <v-btn-toggle class="score-btn" >
-      <v-btn :value="1" @click="initUnconfirmedRecords(1)" > 待我确认 </v-btn>
-      <v-btn :value="2" @click="initUnconfirmedRecords(2)">  与我有关 </v-btn>
+  <v-btn-toggle    class="score-btn" v-model="toggleSelect">
+      <v-btn value="2" @click="initUnconfirmedRecords(2)">  与我有关 </v-btn>
+      <v-btn value="1" @click="initUnconfirmedRecords(1)" > 待我确认 </v-btn>
     </v-btn-toggle>
 
   <div class="score-board" v-if="items.length > 0">
@@ -51,7 +51,7 @@ import {ref} from "vue";
 import {confirmRecordApi, getUnconfirmedRecordApi, isSuccess} from "@/api";
 
 const items = ref([])
-const ss= ref('s')
+const toggleSelect = ref('2')
 function initUnconfirmedRecords(req) {
   getUnconfirmedRecordApi(req).then(res => {
     items.value = res.data as any
