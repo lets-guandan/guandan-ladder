@@ -1,36 +1,40 @@
 <template>
-  <v-tabs color="deep-orange" align-tabs="center">
-    <v-tab width="50%" @click="fetchRankList(RankListTypeEnum.WIN_RATE)">胜率榜</v-tab>
-    <v-tab width="50%" @click="fetchRankList(RankListTypeEnum.WIN_COUNT)">胜场榜</v-tab>
-  </v-tabs>
-  <v-list :lines="'three'" class="rank">
-    <template v-for="(item, index) in data" :key="item.uid">
-      <v-list-item
-        :title="item.nickname"
-        :subtitle="item.profile"
-      >
-        <template v-slot:prepend>
+  <v-app-bar>
+    <v-tabs align-tabs="center" color="deep-orange" fixed-tabs style="width: 100%;">
+      <v-tab width="50%" @click="fetchRankList(RankListTypeEnum.WIN_RATE)">胜率榜</v-tab>
+      <v-tab width="50%" @click="fetchRankList(RankListTypeEnum.WIN_COUNT)">胜场榜</v-tab>
+    </v-tabs>
+  </v-app-bar>
+  <v-container>
+    <v-list :lines="'three'" class="rank">
+      <template v-for="(item, index) in data" :key="item.uid">
+        <v-list-item
+          :subtitle="item.profile"
+          :title="item.nickname"
+        >
+          <template v-slot:prepend>
           <span :class="['rank-num', index <= 2? 'top3': '']">
             {{ index + 1 }}
           </span>
-          <v-avatar>
-            <v-img
-              :src="item.avatarUrl"
-              alt="Avatar"
-            ></v-img>
-          </v-avatar>
-        </template>
+            <v-avatar>
+              <v-img
+                :src="item.avatarUrl"
+                alt="Avatar"
+              ></v-img>
+            </v-avatar>
+          </template>
 
-        <template v-slot:append>
-          <div>
-            <div style="font-size: 8px">胜率：{{ toPercent(item.winNum, item.totalNum) }}</div>
-            <div style="font-size: 8px">胜场：{{ item.winNum }}</div>
-            <div style="font-size: 8px">败场：{{ item.totalNum - item.winNum }}</div>
-          </div>
-        </template>
-      </v-list-item>
-    </template>
-  </v-list>
+          <template v-slot:append>
+            <div>
+              <div style="font-size: 8px">胜率：{{ toPercent(item.winNum, item.totalNum) }}</div>
+              <div style="font-size: 8px">胜场：{{ item.winNum }}</div>
+              <div style="font-size: 8px">败场：{{ item.totalNum - item.winNum }}</div>
+            </div>
+          </template>
+        </v-list-item>
+      </template>
+    </v-list>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
