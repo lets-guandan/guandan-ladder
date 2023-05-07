@@ -48,16 +48,16 @@ function guandanLogin() {
     alert("用户名或密码不允许为空");
     return;
   }
-  let promise = loginApi(toRaw(loginVO));
-  promise.then((result) => {
-    if (isSuccess(result) && result.data != '') {
-      useTokenStore().token = result.data
-      router.replace("/");
-      return;
-    }
-    alert(result.message);
-    router.replace("/login");
-  });
+  loginApi(toRaw(loginVO))
+    .then((result) => {
+      if (isSuccess(result) && result.data != '') {
+        useTokenStore().token = result.data
+        router.replace("/");
+        return;
+      }
+      alert(result.message);
+      router.replace("/login");
+    });
 }
 </script>
 

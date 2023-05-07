@@ -23,6 +23,12 @@ export function listUserApi() {
   return httpClient.get<ApiResult<UserVO[]>>('/user/list')
 }
 
+/** 获取当前登陆用户信息 */
+export function userInfoApi() {
+  return httpClient.get<ApiResult<UserVO>>('/user/info')
+}
+
+
 /** 提交战局记录 */
 export function reportGameRecordApi(gameRecord: GameRecordDTO) {
   return httpClient.post<ApiResult>('/game/record', gameRecord)
