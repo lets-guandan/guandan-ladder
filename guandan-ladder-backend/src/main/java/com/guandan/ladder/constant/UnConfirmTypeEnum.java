@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 待确认查询范围枚举
- * @author hushaoming
- *  2023/4/29 13:47
+ *
+ * @author hushaoming 2023/4/29 13:47
  */
 @Getter
 @RequiredArgsConstructor

@@ -23,4 +23,9 @@ public interface UserMapper extends ExtendMapper<User> {
 	@Select("select * from user where username = #{userName} limit 1")
 	User selectByName(@Param("userName") String userName);
 
+	default User selectByUid(String uid) {
+		LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery(User.class).eq(User::getUid, uid);
+		return this.selectOne(wrapper);
+	}
+
 }

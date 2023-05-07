@@ -27,9 +27,8 @@ public interface GameConverter {
 	GameRecordVO recordEntityToVO(GameRecord dto);
 
 	/**
-	 * 将十进制数字转成二进制字符串显示，可以判断谁确认了
-	 *    0001=1   0010=2  0011=3   0100=4   0101=5  0110=6   0111=7   1000=8
-	 *    1001=9  1010=10  1011=11  1100=12  1101=13  1110=14   1111=15
+	 * 将十进制数字转成二进制字符串显示，可以判断谁确认了 0001=1 0010=2 0011=3 0100=4 0101=5 0110=6 0111=7 1000=8
+	 * 1001=9 1010=10 1011=11 1100=12 1101=13 1110=14 1111=15
 	 */
 	@Named("confirmFlagCalculator")
 	default String confirmFlagCalculator(Integer userConfirmFlagBits) {

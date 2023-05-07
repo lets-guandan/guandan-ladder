@@ -21,7 +21,8 @@ public class GameRecordVO {
 	 * 胜者1 Uid
 	 */
 	private String winUid1;
-	//确认状态
+
+	// 确认状态
 	private char winUid1Flag;
 
 	/**
@@ -33,7 +34,8 @@ public class GameRecordVO {
 	 * 胜者2 Uid
 	 */
 	private String winUid2;
-	//确认状态
+
+	// 确认状态
 	private char winUid2Flag;
 
 	/**
@@ -45,7 +47,8 @@ public class GameRecordVO {
 	 * 败者1
 	 */
 	private String loseUid1;
-	//确认状态
+
+	// 确认状态
 	private char loseUid1Flag;
 
 	/**
@@ -57,7 +60,8 @@ public class GameRecordVO {
 	 * 败者2
 	 */
 	private String loseUid2;
-	//确认状态
+
+	// 确认状态
 	private char loseUid2Flag;
 
 	/**

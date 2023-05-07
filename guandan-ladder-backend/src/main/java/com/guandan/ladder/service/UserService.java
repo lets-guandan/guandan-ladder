@@ -38,4 +38,8 @@ public class UserService {
 		return userMapper.selectByName(userName);
 	}
 
+	public User queryByUid(String userId) {
+		return userMapper.selectByUid(userId);
+	}
+
 }

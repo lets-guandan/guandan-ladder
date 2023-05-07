@@ -41,9 +41,9 @@ public class GameController {
 	@PostMapping("/record")
 	public R<Void> reportGameRecord(@RequestBody @Validated GameRecordDto gameRecordDto) {
 		Set<String> uids = Stream
-				.of(gameRecordDto.getWinUid1(), gameRecordDto.getWinUid2(), gameRecordDto.getLoseUid1(),
-						gameRecordDto.getLoseUid2())
-				.collect(Collectors.toSet());
+			.of(gameRecordDto.getWinUid1(), gameRecordDto.getWinUid2(), gameRecordDto.getLoseUid1(),
+					gameRecordDto.getLoseUid2())
+			.collect(Collectors.toSet());
 		Assert.isTrue(uids.size() == 4, "比赛记录的成员必须是 4 人： {}", uids);
 		gameService.saveRecord(gameRecordDto);
 		return R.ok();
@@ -51,7 +51,6 @@ public class GameController {
 
 	/**
 	 * 历史战绩
-	 *
 	 * @param uid 用户id
 	 */
 	@GetMapping("/list")
@@ -71,7 +70,6 @@ public class GameController {
 
 	/**
 	 * 待生效战绩列表
-	 *
 	 * @param myOrAll 待确认查询范围
 	 */
 	@GetMapping("/record/unconfirmed")
@@ -108,9 +106,8 @@ public class GameController {
 		return R.ok(result);
 	}
 
-
 	/**
-	 * 战绩确认  4人都确认才生效
+	 * 战绩确认 4人都确认才生效
 	 */
 	@PostMapping("/confirm-record")
 	public R<Void> confirmRecord(@RequestBody @Validated ConfirmRecordDto confirmRecordDto) {

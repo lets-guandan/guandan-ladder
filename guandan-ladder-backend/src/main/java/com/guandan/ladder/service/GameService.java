@@ -68,7 +68,8 @@ public class GameService {
 		List<GameRecord> list;
 		if (UnConfirmTypeEnum.MY.equals(unConfirmTypeEnum)) {
 			list = gameRecordMapper.selectUnconfirmedList(uid);
-		} else {
+		}
+		else {
 			// 空或者2查所有人的
 			list = gameRecordMapper.selectInValidRecords(uid);
 		}
@@ -87,12 +88,15 @@ public class GameService {
 			GameRecord gameRecord = gameRecordMapper.selectById(confirmRecordDto.getRecordId());
 			// 如果都确认了 则记录到历史战绩
 			if (gameRecord != null && 15 == gameRecord.getUserConfirmFlagBits()) {
-				// 对战48小时内需确认  另要置为无效状态 不能查出
-//				boolean before = gameRecord.getGameTime().plusHours(48).isBefore(LocalDateTime.now());
-//				Assert.isTrue(before, "战绩确认时效是48小时，此局对战时间-{}", gameRecord.getGameTime());
+				// 对战48小时内需确认 另要置为无效状态 不能查出
+				// boolean before =
+				// gameRecord.getGameTime().plusHours(48).isBefore(LocalDateTime.now());
+				// Assert.isTrue(before, "战绩确认时效是48小时，此局对战时间-{}",
+				// gameRecord.getGameTime());
 				userGameInfoMapper.incrWinNumAndTotalNum(gameRecord.getWinUid1(), gameRecord.getWinUid2());
 				userGameInfoMapper.incrTotalNum(gameRecord.getLoseUid1(), gameRecord.getLoseUid2());
 			}
 		}
 	}
+
 }
