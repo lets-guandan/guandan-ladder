@@ -2,6 +2,9 @@
 import {ref} from "vue";
 import {isSuccess, userInfoApi} from "@/api";
 import {UserVO} from "@/api/types";
+import LogoutDialog from "@/components/LogoutDialog.vue";
+
+const logoutDialog = ref()
 
 const user = ref<UserVO>({
   uid: "",
@@ -40,10 +43,12 @@ userInfoApi().then(res => {
       </v-list-item>
       <v-divider />
       <v-list-item>
-        <v-list-item-title>退出登陆</v-list-item-title>
+        <v-list-item-title @click="() => logoutDialog.open()">退出登陆</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
+
+  <logout-dialog ref="logoutDialog"/>
 </template>
 
 <style scoped>

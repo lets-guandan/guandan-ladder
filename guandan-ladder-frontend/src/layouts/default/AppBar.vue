@@ -8,22 +8,7 @@
     <template v-slot:append>
       <account-menu/>
     </template>
-<!--    <v-dialog v-model="dialog" persistent width="auto">-->
-<!--      <template v-slot:activator="{ props }">-->
-<!--        <v-btn icon="mdi-power-cycle" v-bind="props"/>-->
-<!--      </template>-->
-<!--      <v-card>-->
-<!--        <v-card-text>确认退出登录？</v-card-text>-->
-<!--        <v-card-actions>-->
-<!--          <v-btn color="green-darken-1" variant="text" @click="dialog = false">-->
-<!--            取消-->
-<!--          </v-btn>-->
-<!--          <v-btn color="green-darken-1" variant="text" @click="dialog = false; exitLogin()">-->
-<!--            确认-->
-<!--          </v-btn>-->
-<!--        </v-card-actions>-->
-<!--      </v-card>-->
-<!--    </v-dialog>-->
+
   </v-app-bar>
   <v-navigation-drawer
     v-model="isShow"
@@ -44,12 +29,9 @@
 <script lang="ts" setup>
 import {ref} from "vue";
 import {useRouter} from "vue-router";
-import {useTokenStore} from "@/store/user-store";
 import AccountMenu from "@/components/AccountMenu.vue";
 
 const isShow = ref(false)
-
-const dialog = ref(false)
 
 const items = [
   {
@@ -72,8 +54,5 @@ function toHome() {
   router.push("/")
 }
 
-function exitLogin() {
-  useTokenStore().token = undefined
-  router.push("/login")
-}
+
 </script>
