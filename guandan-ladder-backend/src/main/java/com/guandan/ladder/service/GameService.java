@@ -68,8 +68,7 @@ public class GameService {
 		List<GameRecord> list;
 		if (UnConfirmTypeEnum.MY.equals(unConfirmTypeEnum)) {
 			list = gameRecordMapper.selectUnconfirmedList(uid);
-		}
-		else {
+		} else {
 			// 空或者2查所有人的
 			list = gameRecordMapper.selectInValidRecords(uid);
 		}

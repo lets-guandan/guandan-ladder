@@ -27,7 +27,7 @@
 		   or (#{uid} = win_uid2 and (4&amp;user_confirm_flag_bits) != 4)
 		   or (#{uid} = lose_uid1 and (2&amp;user_confirm_flag_bits) != 2)
 		   or (#{uid} = lose_uid2 and (1&amp;user_confirm_flag_bits) != 1)
-		order by id desc
+		order by game_time desc
 	</select>
 
 </mapper>

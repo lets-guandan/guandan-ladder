@@ -1,5 +1,6 @@
 package com.guandan.ladder.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.model.convert.GameConverter;
@@ -85,22 +86,24 @@ public class GameController {
 			uids.add(gameRecord.getLoseUid2());
 		}
 
-		Map<String, User> userMap = userService.listUserMapByUids(uids);
-
 		List<GameRecordVO> result = new ArrayList<>(gameRecords.size());
-		for (GameRecord gameRecord : gameRecords) {
-			GameRecordVO gameRecordVO = GameConverter.INSTANCE.recordEntityToVO(gameRecord);
-			// 不足4位的二进制补成4位
-			String flag = String.format("%4s", gameRecordVO.getUserConfirmFlag()).replace(' ', '0');
-			gameRecordVO.setWinUid1Flag(flag.charAt(0));
-			gameRecordVO.setWinUid2Flag(flag.charAt(1));
-			gameRecordVO.setLoseUid1Flag(flag.charAt(2));
-			gameRecordVO.setLoseUid2Flag(flag.charAt(3));
-			gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname());
-			gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname());
-			gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname());
-			gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname());
-			result.add(gameRecordVO);
+		if(!CollUtil.isEmpty(uids)) {
+			Map<String, User> userMap = userService.listUserMapByUids(uids);
+
+			for (GameRecord gameRecord : gameRecords) {
+				GameRecordVO gameRecordVO = GameConverter.INSTANCE.recordEntityToVO(gameRecord);
+				// 不足4位的二进制补成4位
+				String flag = String.format("%4s", gameRecordVO.getUserConfirmFlag()).replace(' ', '0');
+				gameRecordVO.setWinUid1Flag(flag.charAt(0));
+				gameRecordVO.setWinUid2Flag(flag.charAt(1));
+				gameRecordVO.setLoseUid1Flag(flag.charAt(2));
+				gameRecordVO.setLoseUid2Flag(flag.charAt(3));
+				gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname());
+				gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname());
+				gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname());
+				gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname());
+				result.add(gameRecordVO);
+			}
 		}
 
 		return R.ok(result);
