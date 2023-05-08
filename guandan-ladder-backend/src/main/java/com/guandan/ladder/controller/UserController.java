@@ -52,8 +52,8 @@ public class UserController {
 		String userId = SecurityContext.getUserId();
 		User user = userService.queryByUid(userId);
 		Assert.notNull(user, "用户不存在");
-		if(!passwordInDto.getOldPassword().equals(user.getPassword())){
-			return R.failed(501,"原密码错误");
+		if (!passwordInDto.getOldPassword().equals(user.getPassword())) {
+			return R.failed(501, "原密码错误");
 		}
 		userService.updatePassword(userId, passwordInDto.getNewPassword());
 		return R.ok();

@@ -1,179 +1,104 @@
-<template>
-  <div>
-      <button
-        class="btn btn-secondary dropdown-toggle"
-        type="button"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-<!--        todo 这里注释后 选择自定义后就无法返回？？？-->
-       {{ selectedOption.label }}
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a
-          class="dropdown-item"
-          v-for="option in options"
-          :key="option.value"
-          :class="{ active: selectedOption.value === option.value }"
-          @click="onOptionChange(option)"
-        >
-          {{ option.label }}
-        </a>
-        <a
-          class="dropdown-item"
-          :class="{ active: selectedOption.value === 'custom' }"
-          @click="showCustom = true, onOptionChange(customOption)"
-        >
-          自定义区间
-        </a>
-      </div>
+<script setup lang="ts">
+import {ref} from "vue";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import {myHistoryGameRecordApi} from "@/api";
 
-      <div class="custom-date-range" v-show="showCustom">
-        <v-col cols="3" md="2">
-        <v-menu
-          v-model="startmenu"
-          :close-on-content-click="false"
-          :nudge-right="20"
-          :return-value.sync="startDate"
-          lazy
-          transition="scale-transition"
-          offset-y
-          full-width
-          min-width="20px">
-          <template v-slot:activator="{ on }">
-            <v-text-field
-              v-model="startDate"
-              label="开始日期"
-              prepend-icon="mdi-calendar"
-              readonly
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-if="startmenu"
-            v-model="startDate"
-            @input="startmenu = false"
-          ></v-date-picker>
+// 当前查询的日期类型
+const dateType = ref()
 
+// 日期范围，当选择自定义时使用
+const dateRange = ref()
 
-        </v-menu>
-
-          <v-menu
-            v-model="endmenu"
-            :close-on-content-click="true"
-            :nudge-right="20"
-            :return-value.sync="endDate"
-            lazy
-            transition="scale-transition"
-            offset-y
-            full-width
-            min-width="20px">
-            <template v-slot:activator="{ on }">
-              <v-text-field
-                v-if="endmenu"
-                v-model="endDate"
-                label="截止日期"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-if="endmenu"
-              v-model="endDate"
-              @input="endmenu = false"
-            ></v-date-picker>
-          </v-menu>
-        </v-col>
-      </div>
-
-      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        在 {{ selectedOption.label }} 期间，您的历史战绩如下：<span class="caret"></span>
-      </button>
-  </div>
-
-
-
-</template>
-
-<script>
-import { ref } from 'vue';
-
-export default {
-  name: "HistoryRecord",
-  props: {
-    propsSelectedOption: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props, { emit }){
-    const  options = [
-        { value: '3_days', label: '近3天' },
-        { value: '7_days', label: '近7天' },
-        { value: '15_days', label: '近15天' },
-        { value: '30_days', label: '近30天' },
-        { value: 'custom', label: '自定义2区间' }
-      ];
-    const selectedOption = ref(options[0]); // 默认选中 "3天"
-    const showCustom = ref(false);
-    const startDate = ref(null);
-    const endDate = ref(null);
-    function onOptionChange(option) {
-      if (option.value === "custom") {
-        showCustom.value = true;
-      } else {
-        selectedOption.value = option;
-        showCustom.value = false;
-
-      }
-       emit("optionChange", option);
-    }
-
-    const customOption = { value: "custom", label: "自定义区间" };
-    return {
-      options,
-      showCustom,
-      startDate,
-      endDate,
-      selectedOption,
-      onOptionChange,
-      customOption,
-    };
-
-  },
+const records = ref()
+function loadData() {
+  // TODO 查询根据日期类型进行查询
+  myHistoryGameRecordApi().then(res => {
+    records.value = res.data
+  })
 }
-
+loadData()
 </script>
 
+
+<template>
+  <div class="d-flex align-center flex-column">
+    <v-btn-toggle
+      v-model="dateType"
+      color="primary"
+      variant="text"
+      rounded="0"
+      @click="loadData"
+    >
+      <v-btn size="x-small" value="3_days">近3天</v-btn>
+      <v-btn size="x-small" value="7_days">近7天</v-btn>
+      <v-btn size="x-small" value="15_days">近15天</v-btn>
+      <v-btn size="x-small" value="30_days">近30天</v-btn>
+      <v-btn size="x-small" value="custom">自定义区间</v-btn>
+    </v-btn-toggle>
+  </div>
+
+  <div v-show="dateType == 'custom'" style="margin: 0 30px">
+    <vue-date-picker v-model="dateRange" range/>
+  </div>
+
+  <v-list :border="12">
+    <v-list-item v-for="record in records" :key="record.id">
+      <v-row align="center">
+        <v-col cols="4">
+          {{ record.gameTime }}
+        </v-col>
+        <v-col>
+          <v-row align="center">
+            <v-col cols="3" align-self="center">胜者：</v-col>
+            <v-col>
+              <v-chip
+                label
+                color="green"
+                text-color="white"
+                style="margin-right: 8px"
+              >
+                {{ record.winNickname1 }}
+              </v-chip>
+              <v-chip
+                label
+                color="green"
+                text-color="white"
+              >
+                {{ record.winNickname2 }}
+              </v-chip>
+            </v-col>
+          </v-row>
+          <v-row align="center">
+            <v-col cols="3">败者：</v-col>
+            <v-col>
+              <v-chip
+                label
+                color="red"
+                text-color="white"
+                style="margin-right: 8px"
+              >
+                {{ record.loseNickname1 }}
+              </v-chip>
+              <v-chip
+                label
+                color="red"
+                text-color="white"
+              >
+                {{ record.loseNickname2 }}
+              </v-chip>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+      <v-divider/>
+    </v-list-item>
+  </v-list>
+</template>
+
 <style scoped>
-
-.dropdown-toggle{
-  margin-top: 10px;
-  margin-left: 10px;
+.v-row + .v-row {
+  margin-top: 0px;
 }
-.dropdown-item {
-  margin: 20px 10px 15px 10px;
-  border-color: #4caf50;
-  background-color: #eeeeee;
-}
-.dropdown-menu .dropdown-item.active  {
-
-  display: inline-block;
-  /*padding: 0.5rem 1rem;*/
-  font-size: 1rem;
-  font-weight: 200;
-  line-height: 1.5;
-  text-align: center;
-  color: #fff;
-  background-color: #388e3c;
-
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  cursor: pointer;
-}
-
 </style>
+

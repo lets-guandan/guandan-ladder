@@ -54,19 +54,21 @@ public class GameController {
 	 * 历史战绩
 	 * @param uid 用户id
 	 */
-	@GetMapping("/list")
-	public R<List<GameRecordOutDto>> gameList(@RequestParam("uid") String uid) {
-		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList(uid);
-		return R.ok(gameRecordOutDtoList);
+	@GetMapping("/list/{uid}")
+	public R<List<GameRecordVO>> gameList(@PathVariable("uid") String uid) {
+		List<GameRecord> gameRecords = gameService.gameList(uid);
+		List<GameRecordVO> result = getGameRecordVoList(gameRecords);
+		return R.ok(result);
 	}
 
 	/**
 	 * 我的历史战绩
 	 */
-	@GetMapping("/myList")
-	public R<List<GameRecordOutDto>> gameMyList() {
-		List<GameRecordOutDto> gameRecordOutDtoList = gameService.gameList(SecurityContext.getUserId());
-		return R.ok(gameRecordOutDtoList);
+	@GetMapping("/list")
+	public R<List<GameRecordVO>> gameMyList() {
+		List<GameRecord> gameRecords = gameService.gameList(SecurityContext.getUserId());
+		List<GameRecordVO> result = getGameRecordVoList(gameRecords);
+		return R.ok(result);
 	}
 
 	/**
@@ -78,6 +80,11 @@ public class GameController {
 		UnConfirmTypeEnum unConfirmTypeEnum = UnConfirmTypeEnum.valueOf(myOrAll);
 		List<GameRecord> gameRecords = gameService.unconfirmedRecordList(unConfirmTypeEnum);
 		log.info("待生效列表，{},{}", myOrAll, gameRecords);
+		List<GameRecordVO> result = getGameRecordVoList(gameRecords);
+		return R.ok(result);
+	}
+
+	private List<GameRecordVO> getGameRecordVoList(List<GameRecord> gameRecords) {
 		Set<String> uids = new HashSet<>();
 		for (GameRecord gameRecord : gameRecords) {
 			uids.add(gameRecord.getWinUid1());
@@ -86,27 +93,28 @@ public class GameController {
 			uids.add(gameRecord.getLoseUid2());
 		}
 
-		List<GameRecordVO> result = new ArrayList<>(gameRecords.size());
-		if(!CollUtil.isEmpty(uids)) {
-			Map<String, User> userMap = userService.listUserMapByUids(uids);
-
-			for (GameRecord gameRecord : gameRecords) {
-				GameRecordVO gameRecordVO = GameConverter.INSTANCE.recordEntityToVO(gameRecord);
-				// 不足4位的二进制补成4位
-				String flag = String.format("%4s", gameRecordVO.getUserConfirmFlag()).replace(' ', '0');
-				gameRecordVO.setWinUid1Flag(flag.charAt(0));
-				gameRecordVO.setWinUid2Flag(flag.charAt(1));
-				gameRecordVO.setLoseUid1Flag(flag.charAt(2));
-				gameRecordVO.setLoseUid2Flag(flag.charAt(3));
-				gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname());
-				gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname());
-				gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname());
-				gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname());
-				result.add(gameRecordVO);
-			}
+		if (CollUtil.isEmpty(uids)) {
+			return Collections.emptyList();
 		}
 
-		return R.ok(result);
+		Map<String, User> userMap = userService.listUserMapByUids(uids);
+
+		List<GameRecordVO> result = new ArrayList<>(gameRecords.size());
+		for (GameRecord gameRecord : gameRecords) {
+			GameRecordVO gameRecordVO = GameConverter.INSTANCE.recordEntityToVO(gameRecord);
+			// 不足4位的二进制补成4位
+			String flag = String.format("%4s", gameRecordVO.getUserConfirmFlag()).replace(' ', '0');
+			gameRecordVO.setWinUid1Flag(flag.charAt(0));
+			gameRecordVO.setWinUid2Flag(flag.charAt(1));
+			gameRecordVO.setLoseUid1Flag(flag.charAt(2));
+			gameRecordVO.setLoseUid2Flag(flag.charAt(3));
+			gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname());
+			gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname());
+			gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname());
+			gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname());
+			result.add(gameRecordVO);
+		}
+		return result;
 	}
 
 	/**

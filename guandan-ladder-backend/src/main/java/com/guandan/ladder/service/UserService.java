@@ -48,4 +48,5 @@ public class UserService {
 	public void updatePassword(String uid, String password) {
 		userMapper.updatePassword(password, uid);
 	}
+
 }

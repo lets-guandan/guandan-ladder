@@ -50,12 +50,9 @@ public class GameService {
 	/**
 	 * 历史战绩列表
 	 */
-	public List<GameRecordOutDto> gameList(String uid) {
+	public List<GameRecord> gameList(String uid) {
 		List<GameRecord> list = gameRecordMapper.selectValidRecords(uid);
-		if (list == null) {
-			return new ArrayList<>();
-		}
-		return list.stream().map(GameConverter.INSTANCE::recordOutDtoToEntity).collect(Collectors.toList());
+		return list == null ? new ArrayList<>() : list;
 	}
 
 	/**
@@ -68,7 +65,8 @@ public class GameService {
 		List<GameRecord> list;
 		if (UnConfirmTypeEnum.MY.equals(unConfirmTypeEnum)) {
 			list = gameRecordMapper.selectUnconfirmedList(uid);
-		} else {
+		}
+		else {
 			// 空或者2查所有人的
 			list = gameRecordMapper.selectInValidRecords(uid);
 		}

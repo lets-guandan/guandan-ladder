@@ -51,8 +51,15 @@ export function confirmRecordApi(recordId: number) {
 
 /** 获取历史战绩列表 */
 export function historyGameRecordApi(uid: number) {
-  return httpClient.post<ApiResult>('/game/list', {uid: uid})
+  return httpClient.get<ApiResult>(`/game/list/${uid}`)
 }
+
+
+/** 获取本人历史战绩列表 */
+export function myHistoryGameRecordApi() {
+  return httpClient.get<ApiResult>('/game/list')
+}
+
 
 /** 修改密码 */
 export function updatePassword(updatePasswordVO: UpdatePasswordVO) {
