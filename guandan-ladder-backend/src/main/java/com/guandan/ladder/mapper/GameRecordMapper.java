@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.guandan.ladder.model.entity.GameRecord;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,10 +21,9 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 
 	/**
 	 * 查询前用户的有效历史战绩
-	 * @param uid 当前用户id
 	 * @return List<GameRecord>
 	 */
-	default List<GameRecord> selectValidRecords(String uid) {
+	default List<GameRecord> selectValidRecords(String uid, LocalDateTime startTime, LocalDateTime endTime) {
 		// 查询参与对局 且 等于15的表示 确认完成的
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
 			.eq(GameRecord::getUserConfirmFlagBits, 15)
@@ -34,6 +34,7 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 				.eq(GameRecord::getLoseUid1, uid)
 				.or()
 				.eq(GameRecord::getLoseUid2, uid))
+				.ge(GameRecord::getGameTime, startTime).le(GameRecord::getGameTime, endTime)
 			.orderByDesc(GameRecord::getGameTime);
 		return this.selectList(wrapper);
 	}

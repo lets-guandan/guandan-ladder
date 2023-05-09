@@ -4,10 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.model.convert.GameConverter;
-import com.guandan.ladder.model.dto.ConfirmRecordDto;
-import com.guandan.ladder.model.dto.GameRecordDto;
-import com.guandan.ladder.model.dto.GameRecordOutDto;
-import com.guandan.ladder.model.dto.GameRecordVO;
+import com.guandan.ladder.model.dto.*;
 import com.guandan.ladder.model.entity.GameRecord;
 import com.guandan.ladder.model.entity.User;
 import com.guandan.ladder.security.SecurityContext;
@@ -52,11 +49,10 @@ public class GameController {
 
 	/**
 	 * 历史战绩
-	 * @param uid 用户id
 	 */
-	@GetMapping("/list/{uid}")
-	public R<List<GameRecordVO>> gameList(@PathVariable("uid") String uid) {
-		List<GameRecord> gameRecords = gameService.gameList(uid);
+	@PostMapping("/list/{uid}")
+	public R<List<GameRecordVO>> gameList(@RequestBody ListInDto inDto) {
+		List<GameRecord> gameRecords = gameService.gameList(inDto);
 		List<GameRecordVO> result = getGameRecordVoList(gameRecords);
 		return R.ok(result);
 	}
@@ -64,9 +60,10 @@ public class GameController {
 	/**
 	 * 我的历史战绩
 	 */
-	@GetMapping("/list")
-	public R<List<GameRecordVO>> gameMyList() {
-		List<GameRecord> gameRecords = gameService.gameList(SecurityContext.getUserId());
+	@PostMapping("/list")
+	public R<List<GameRecordVO>> gameMyList(@RequestBody ListInDto inDto) {
+		inDto.setUid(SecurityContext.getUserId());
+		List<GameRecord> gameRecords = gameService.gameList(inDto);
 		List<GameRecordVO> result = getGameRecordVoList(gameRecords);
 		return R.ok(result);
 	}
