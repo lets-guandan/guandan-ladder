@@ -1,21 +1,23 @@
 package com.guandan.ladder.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.guandan.ladder.constant.UnConfirmTypeEnum;
 import com.guandan.ladder.mapper.GameRecordMapper;
 import com.guandan.ladder.mapper.UserGameInfoMapper;
 import com.guandan.ladder.model.convert.GameConverter;
 import com.guandan.ladder.model.dto.ConfirmRecordDto;
 import com.guandan.ladder.model.dto.GameRecordDto;
-import com.guandan.ladder.model.dto.GameRecordOutDto;
+import com.guandan.ladder.model.dto.ListInDto;
 import com.guandan.ladder.model.entity.GameRecord;
 import com.guandan.ladder.security.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author hccake
@@ -50,8 +52,21 @@ public class GameService {
 	/**
 	 * 历史战绩列表
 	 */
-	public List<GameRecord> gameList(String uid) {
-		List<GameRecord> list = gameRecordMapper.selectValidRecords(uid);
+	public List<GameRecord> gameList(ListInDto inDto) {
+		LocalDateTime startTime = inDto.getStartTime();
+		LocalDateTime endTime = inDto.getEndTime();
+		LocalDateTime now = LocalDateTime.now();
+		// 如果有指定天数 按照天数来
+		if (inDto.getDays() > 0) {
+			startTime = now.minusDays(inDto.getDays());
+			endTime = now;
+		} else {
+			// 如果开始时间是空 默认是15天前 结束时间默认当前系统时间
+			startTime = startTime != null ? startTime : now.minusDays(15);
+			endTime = endTime != null ? endTime : now;
+		}
+		// 查表
+		List<GameRecord> list = gameRecordMapper.selectValidRecords(inDto.getUid(), startTime, endTime);
 		return list == null ? new ArrayList<>() : list;
 	}
 
