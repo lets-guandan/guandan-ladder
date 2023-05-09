@@ -53,20 +53,20 @@ public class GameService {
 	 * 历史战绩列表
 	 */
 	public List<GameRecord> gameList(ListInDto inDto) {
-		String days = inDto.getDays();
-		String startTime = inDto.getStartTime();
-		String endTime = inDto.getEndTime();
-
-		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+		LocalDateTime startTime = inDto.getStartTime();
+		LocalDateTime endTime = inDto.getEndTime();
 		LocalDateTime now = LocalDateTime.now();
-		// 开始时间是空 默认是15天前
-		LocalDateTime start = StrUtil.isBlank(startTime) ? now.minusDays(15) : LocalDateTime.parse(startTime, formatter);
 		// 如果有指定天数 按照天数来
-		start = StrUtil.isBlank(days) ? start : now.minusDays(Long.parseLong(days));
-		// 结束时间默认当前系统时间
-		LocalDateTime end = StrUtil.isBlank(endTime) || StrUtil.isNotBlank(days) ? now : LocalDateTime.parse(endTime, formatter);
+		if (inDto.getDays() > 0) {
+			startTime = now.minusDays(inDto.getDays());
+			endTime = now;
+		} else {
+			// 如果开始时间是空 默认是15天前 结束时间默认当前系统时间
+			startTime = startTime != null ? startTime : now.minusDays(15);
+			endTime = endTime != null ? endTime : now;
+		}
 		// 查表
-		List<GameRecord> list = gameRecordMapper.selectValidRecords(inDto.getUid(), start, end);
+		List<GameRecord> list = gameRecordMapper.selectValidRecords(inDto.getUid(), startTime, endTime);
 		return list == null ? new ArrayList<>() : list;
 	}
 
