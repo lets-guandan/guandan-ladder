@@ -1,8 +1,8 @@
 name: Deploy to preview server
 
 on:
-  push:
-    branches: [ "master" ]
+#  push:
+#    branches: [ "master" ]
   # 手动触发事件
   workflow_dispatch:
 
@@ -21,14 +21,16 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn package -DoutputDirectory=/build -P preview
+        run: mvn package -DoutputDirectory=build -P preview
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.PREVIEW_SERVER_SSH_PRIVATE_KEY }}
-          ARGS: '-avz --delete'
-          SOURCE: 'build/'
+          ARGS: '-avz'
+          SOURCE: 'guandan-ladder-backend/build/'
           REMOTE_HOST: ${{ secrets.PREVIEW_SERVER_HOST }}
           REMOTE_USER: ${{ secrets.PREVIEW_SERVER_USER }}
           TARGET: ${{ secrets.GUANDAN_TARGET }}
+          SCRIPT_AFTER: |
+            ./restart.sh
