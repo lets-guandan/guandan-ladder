@@ -23,6 +23,7 @@
 	<properties>
 		<revision>1.0.0</revision>
 		<maven.deploy.skip>true</maven.deploy.skip>
+		<outputDirectory>${project.basedir}/target</outputDirectory>
 	</properties>
 
 	<!-- oss 快照私服 -->
@@ -39,4 +40,19 @@
 			</snapshots>
 		</repository>
 	</repositories>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<outputDirectory>${outputDirectory}</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
