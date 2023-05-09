@@ -50,7 +50,7 @@ userInfoApi().then(res => {
     </v-list>
   </v-menu>
 
-  <updatePassword-dialog ref="updatePasswordDialog"/>
+  <update-password-dialog ref="updatePasswordDialog"/>
   <logout-dialog ref="logoutDialog"/>
 </template>
 
