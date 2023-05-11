@@ -34,7 +34,8 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 				.eq(GameRecord::getLoseUid1, uid)
 				.or()
 				.eq(GameRecord::getLoseUid2, uid))
-				.ge(GameRecord::getGameTime, startTime).le(GameRecord::getGameTime, endTime)
+			.ge(GameRecord::getGameTime, startTime)
+			.le(GameRecord::getGameTime, endTime)
 			.orderByDesc(GameRecord::getGameTime);
 		return this.selectList(wrapper);
 	}

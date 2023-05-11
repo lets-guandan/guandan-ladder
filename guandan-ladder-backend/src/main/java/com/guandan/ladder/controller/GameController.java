@@ -60,7 +60,7 @@ public class GameController {
 	/**
 	 * 我的历史战绩
 	 */
-	@PostMapping("/list")
+	@GetMapping("/list")
 	public R<List<GameRecordVO>> gameMyList(@RequestBody ListInDto inDto) {
 		inDto.setUid(SecurityContext.getUserId());
 		List<GameRecord> gameRecords = gameService.gameList(inDto);
