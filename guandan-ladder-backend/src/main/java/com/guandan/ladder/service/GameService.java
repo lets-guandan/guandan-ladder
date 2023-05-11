@@ -60,7 +60,8 @@ public class GameService {
 		if (inDto.getDays() > 0) {
 			startTime = now.minusDays(inDto.getDays());
 			endTime = now;
-		} else {
+		}
+		else {
 			// 如果开始时间是空 默认是15天前 结束时间默认当前系统时间
 			startTime = startTime != null ? startTime : now.minusDays(15);
 			endTime = endTime != null ? endTime : now;
