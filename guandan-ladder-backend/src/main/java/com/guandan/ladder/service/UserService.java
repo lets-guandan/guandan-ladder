@@ -50,7 +50,7 @@ public class UserService {
 	 */
 	public void updatePassword(String uid, String password) {
 		String encodedPassword = passwordEncoder.encode(password);
-		userMapper.updatePassword(encodedPassword, uid);
+		userMapper.updatePassword(uid,encodedPassword);
 	}
 
 }
