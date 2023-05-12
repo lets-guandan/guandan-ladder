@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.guandan.ladder.mapper.UserMapper;
 import com.guandan.ladder.model.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+	private final PasswordEncoder passwordEncoder;
 
 	private final UserMapper userMapper;
 
@@ -46,7 +49,8 @@ public class UserService {
 	 * 修改密码
 	 */
 	public void updatePassword(String uid, String password) {
-		userMapper.updatePassword(password, uid);
+		String encodedPassword = passwordEncoder.encode(password);
+		userMapper.updatePassword(encodedPassword, uid);
 	}
 
 }
