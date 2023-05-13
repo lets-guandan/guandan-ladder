@@ -46,7 +46,7 @@ public class UserService {
 	 * 修改密码
 	 */
 	public void updatePassword(String uid, String password) {
-		userMapper.updatePassword(password, uid);
+		userMapper.updatePassword(uid, password);
 	}
 
 }
