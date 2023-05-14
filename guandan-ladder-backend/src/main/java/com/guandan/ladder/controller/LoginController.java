@@ -40,7 +40,8 @@ public class LoginController {
 			String token = JwtUtils.createToken(user.getUid(), new HashMap<>(0));
 			log.info("user login success, name:{}", userName);
 			return R.ok(token);
-		} else {
+		}
+		else {
 			log.warn("user login failed, name:{}", userName);
 			return R.failed(500, "用户名或密码错误");
 		}
