@@ -1,6 +1,7 @@
 package com.guandan.ladder.controller;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.crypto.digest.BCrypt;
 import com.guandan.ladder.model.dto.LoginDTO;
 import com.guandan.ladder.model.entity.User;
 import com.guandan.ladder.service.UserService;
@@ -35,13 +36,11 @@ public class LoginController {
 		User user = userService.queryByName(userName.trim());
 		Assert.notNull(user, "用户名或密码错误");
 
-		// TODO: 用户密码应该密文存储
-		if (user.getPassword().equals(loginDTO.getPassword().trim())) {
-			String token = JwtUtils.createToken(user.getUid(), new HashMap<>());
+		if (BCrypt.checkpw(loginDTO.getPassword().trim(), user.getPassword())) {
+			String token = JwtUtils.createToken(user.getUid(), new HashMap<>(0));
 			log.info("user login success, name:{}", userName);
 			return R.ok(token);
-		}
-		else {
+		} else {
 			log.warn("user login failed, name:{}", userName);
 			return R.failed(500, "用户名或密码错误");
 		}

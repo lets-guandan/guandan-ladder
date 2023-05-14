@@ -1,6 +1,7 @@
 package com.guandan.ladder.controller;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.crypto.digest.BCrypt;
 import com.guandan.ladder.model.convert.UserConverter;
 import com.guandan.ladder.model.dto.PasswordInDto;
 import com.guandan.ladder.model.entity.User;
@@ -52,10 +53,12 @@ public class UserController {
 		String userId = SecurityContext.getUserId();
 		User user = userService.queryByUid(userId);
 		Assert.notNull(user, "用户不存在");
-		if (!passwordInDto.getOldPassword().equals(user.getPassword())) {
+
+		if (!BCrypt.checkpw(passwordInDto.getOldPassword(), user.getPassword())) {
 			return R.failed(501, "原密码错误");
 		}
-		userService.updatePassword(userId, passwordInDto.getNewPassword());
+		String newPassword = BCrypt.hashpw(passwordInDto.getNewPassword(), BCrypt.gensalt());
+		userService.updatePassword(userId, newPassword);
 		return R.ok();
 	}
 
