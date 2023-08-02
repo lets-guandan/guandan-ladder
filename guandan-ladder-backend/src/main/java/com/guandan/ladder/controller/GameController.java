@@ -50,7 +50,7 @@ public class GameController {
 	/**
 	 * 历史战绩
 	 */
-	@PostMapping("/list/{uid}")
+	@GetMapping("/list/{uid}")
 	public R<List<GameRecordVO>> gameList(@RequestBody ListInDto inDto) {
 		List<GameRecord> gameRecords = gameService.gameList(inDto);
 		List<GameRecordVO> result = getGameRecordVoList(gameRecords);
@@ -61,7 +61,8 @@ public class GameController {
 	 * 我的历史战绩
 	 */
 	@GetMapping("/list")
-	public R<List<GameRecordVO>> gameMyList(@RequestBody ListInDto inDto) {
+	public R<List<GameRecordVO>> gameMyList() {
+		ListInDto inDto = new ListInDto();
 		inDto.setUid(SecurityContext.getUserId());
 		List<GameRecord> gameRecords = gameService.gameList(inDto);
 		List<GameRecordVO> result = getGameRecordVoList(gameRecords);
@@ -105,10 +106,18 @@ public class GameController {
 			gameRecordVO.setWinUid2Flag(flag.charAt(1));
 			gameRecordVO.setLoseUid1Flag(flag.charAt(2));
 			gameRecordVO.setLoseUid2Flag(flag.charAt(3));
-			gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname());
-			gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname());
-			gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname());
-			gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname());
+			if (userMap.containsKey(gameRecordVO.getWinUid1())) {
+				gameRecordVO.setWinNickname1(userMap.get(gameRecordVO.getWinUid1()).getNickname());
+			}
+			if (userMap.containsKey(gameRecordVO.getWinUid2())) {
+				gameRecordVO.setWinNickname2(userMap.get(gameRecordVO.getWinUid2()).getNickname());
+			}
+			if (userMap.containsKey(gameRecordVO.getLoseUid1())) {
+				gameRecordVO.setLoseNickname1(userMap.get(gameRecordVO.getLoseUid1()).getNickname());
+			}
+			if (userMap.containsKey(gameRecordVO.getLoseUid2())) {
+				gameRecordVO.setLoseNickname2(userMap.get(gameRecordVO.getLoseUid2()).getNickname());
+			}
 			result.add(gameRecordVO);
 		}
 		return result;

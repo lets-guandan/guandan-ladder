@@ -41,6 +41,12 @@
  例如：1.0.0-SNAPSHOT 
 - 合并代码
 
+- 本地启动步骤
+  1、在guandan-ladder下clean，然后package，启动后端服务，前提要有mysql数据库，或者去node官网下载nodejs 安装一路下一步，可以不用package实现实时加载
+  2、访问localhost:11111  或者直接访问前端地址http://localhost:3000
+  3、安装docker desktop pull mysql镜像，启动containers设置端口和环境变量MYSQL_ROOT_PASSWORD添加密码，创建数据库 guandan_ladder 建表添加用户和数据
+  4、commit前需调整格式，点击maven插件javaformat
+
 ## FAQ
 - 在使用中有任何问题，欢迎反馈
 
