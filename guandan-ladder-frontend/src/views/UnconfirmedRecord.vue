@@ -12,10 +12,15 @@
   <!--  </v-list>-->
 
 <!--  增加二进制结果展示；增加button组合按钮 待我确认|| 与我有关 请求接口getUnconfirmedRecordApi传1和2-->
-  <v-btn-toggle    class="score-btn" v-model="toggleSelect">
-      <v-btn value="2" @click="initUnconfirmedRecords(2)">  与我有关 </v-btn>
-      <v-btn value="1" @click="initUnconfirmedRecords(1)" > 待我确认 </v-btn>
-    </v-btn-toggle>
+<!--  <v-btn-toggle    class="score-btn" v-model="toggleSelect">-->
+<!--      <v-btn value="2" @click="initUnconfirmedRecords(2)">  与我有关 </v-btn>-->
+<!--      <v-btn value="1" @click="initUnconfirmedRecords(1)" > 待我确认 </v-btn>-->
+<!--    </v-btn-toggle>-->
+
+  <v-tabs v-model="tab" align-tabs="center" color="green" fixed-tabs style="width: 100%;">
+    <v-tab width="50%" :value="2" @click="initUnconfirmedRecords(2)">与我有关</v-tab>
+    <v-tab width="50%" :value="1" @click="initUnconfirmedRecords(1)">待我确认</v-tab>
+  </v-tabs>
 
   <div class="score-board" v-if="items.length > 0">
     <div class="score-item" v-for="item in items" :key="item.id">
@@ -42,20 +47,25 @@
   </div>
 
   <div v-else>
-    暂无待生效战绩列表
+    <v-window v-model="tab">
+      <v-window-item :value="2">
+        暂无与你有关
+      </v-window-item>
+      <v-window-item :value="1">
+        暂无待你确认
+      </v-window-item>
+    </v-window>
   </div>
 
-  <div>
-
-  </div>
 </template>
 
 <script setup lang="ts">
 import {ref} from "vue";
 import {confirmRecordApi, getUnconfirmedRecordApi, isSuccess} from "@/api";
+import {RankListTypeEnum} from "@/api/types";
 
 const items = ref([])
-const toggleSelect = ref('2')
+const tab = ref('2')
 
 function initUnconfirmedRecords(req) {
   getUnconfirmedRecordApi(req).then(res => {

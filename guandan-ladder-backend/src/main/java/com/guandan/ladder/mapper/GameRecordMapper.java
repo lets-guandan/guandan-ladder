@@ -46,7 +46,7 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 	 * @return List<GameRecord>
 	 */
 	default List<GameRecord> selectInValidRecords(String uid) {
-		// 查询参与对局 且 不等于15的表示 确认完成的
+		// 查询参与对局 且 不等于15的表示 還沒确认完成的
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
 			.ne(GameRecord::getUserConfirmFlagBits, 15)
 			.and(w -> w.eq(GameRecord::getWinUid1, uid)
