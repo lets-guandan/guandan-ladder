@@ -30,6 +30,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RankService {
 
+	/**
+	 * 定位赛次数，如果用户的总场次低于定位赛，则排名时移到末尾
+	 */
+	private static final int PLACEMENT_MATCH_LIMIT = 10;
+
 	private final UserService userService;
 
 	private final UserGameInfoMapper userGameInfoMapper;
@@ -55,7 +60,15 @@ public class RankService {
 		List<String> uidList = userGameInfoList.stream().map(UserGameInfo::getUid).collect(Collectors.toList());
 		Map<String, User> userMap = userService.listUserMapByUids(uidList);
 
+		return getRankList(userGameInfoList, userMap);
+	}
+
+	/**
+	 * 获取排行榜
+	 */
+	private static List<UserRankVO> getRankList(List<UserGameInfo> userGameInfoList, Map<String, User> userMap) {
 		List<UserRankVO> list = new ArrayList<>();
+		List<UserRankVO> placementList = new ArrayList<>();
 		for (UserGameInfo userGameInfo : userGameInfoList) {
 			UserRankVO userRankVO = new UserRankVO();
 			userRankVO.setUid(userGameInfo.getUid());
@@ -63,12 +76,19 @@ public class RankService {
 			userRankVO.setTotalNum(userGameInfo.getTotalNum());
 			// 计算胜率，保留2位小数
 			BigDecimal divide = new BigDecimal(userGameInfo.getWinNum())
-				.divide(new BigDecimal(userGameInfo.getTotalNum()), 2, RoundingMode.HALF_UP);
+					.divide(new BigDecimal(userGameInfo.getTotalNum()), 2, RoundingMode.HALF_UP);
 			userRankVO.setWinPercent(divide);
 			UserConverter.INSTANCE.fillUserRankVo(userRankVO, userMap.get(userGameInfo.getUid()));
-			list.add(userRankVO);
-		}
 
+			// 如果没有打完定位赛，则排名后移
+			if (userRankVO.getTotalNum() >= PLACEMENT_MATCH_LIMIT) {
+				list.add(userRankVO);
+			} else {
+				placementList.add(userRankVO);
+			}
+		}
+		// 添加定位赛数据
+		list.addAll(placementList);
 		return list;
 	}
 
