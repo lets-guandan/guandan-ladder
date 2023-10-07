@@ -2,7 +2,7 @@ package com.guandan.ladder.controller;
 
 import com.guandan.ladder.constant.RankListTypeEnum;
 import com.guandan.ladder.model.vo.UserRankVO;
-import com.guandan.ladder.service.UserGameInfoService;
+import com.guandan.ladder.service.RankService;
 import com.hccake.ballcat.common.model.result.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.Assert;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RankListController {
 
-	private final UserGameInfoService userGameInfoService;
+	private final RankService rankService;
 
 	/**
 	 * 排行榜：胜场 & 胜率
@@ -30,7 +30,7 @@ public class RankListController {
 	public R<List<UserRankVO>> rank(@RequestParam("rankType") Integer rankType) {
 		RankListTypeEnum rankListTypeEnum = RankListTypeEnum.valueOf(rankType);
 		Assert.notNull(rankListTypeEnum, "未知的排行类型：" + rankType);
-		List<UserRankVO> userRankVOS = userGameInfoService.rank(rankListTypeEnum);
+		List<UserRankVO> userRankVOS = rankService.rankList(rankListTypeEnum);
 		return R.ok(userRankVOS);
 	}
 

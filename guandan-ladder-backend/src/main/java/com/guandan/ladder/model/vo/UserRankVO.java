@@ -21,11 +21,6 @@ public class UserRankVO {
 	private String username;
 
 	/**
-	 * 密码
-	 */
-	private String password;
-
-	/**
 	 * 昵称
 	 */
 	private String nickname;

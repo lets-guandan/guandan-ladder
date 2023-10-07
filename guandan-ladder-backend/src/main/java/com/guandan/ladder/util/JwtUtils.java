@@ -12,9 +12,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.security.SecureRandom;
 import java.text.ParseException;
-import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +20,10 @@ import java.util.Map;
  *
  * @author hccake
  */
-public class JwtUtils {
+public final class JwtUtils {
+
+	private JwtUtils() {
+	}
 
 	private static final String SECRET_KEY = "oZjv7r/vAOzE7svJ6pTxDZJwo4vCvi5YsYyZ0EaIMEI="; // 可以替换为自己的密钥
 
