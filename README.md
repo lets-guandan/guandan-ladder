@@ -2,7 +2,7 @@
 
 ![version](https://img.shields.io/badge/version-1.0.0-blueviolet.svg)
 [![license](https://img.shields.io/badge/license-MIT-ff69b4.svg)](https://mit-license.org/license.html)
-[![springboot](https://img.shields.io/badge/springboot-2.3.0.RELEASE-orange.svg)](https://spring.io/projects/spring-boot)
+[![springboot](https://img.shields.io/badge/springboot-2.7.11-orange.svg)](https://spring.io/projects/spring-boot)
 
 ## 项目介绍
 记录每一次紧张刺激的掼蛋战绩，也是学习和练习前后端编程技术的项目；  登录访问地址：http://guandan.ballcat.cn/
@@ -51,4 +51,7 @@
 - 在使用中有任何问题，欢迎反馈
 
 
-## [LICENSE](LICENSE)
+## License
+MIT license .
+
+Copyright (c) All Authors.

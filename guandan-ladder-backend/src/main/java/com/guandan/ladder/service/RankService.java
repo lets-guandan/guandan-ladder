@@ -76,14 +76,15 @@ public class RankService {
 			userRankVO.setTotalNum(userGameInfo.getTotalNum());
 			// 计算胜率，保留2位小数
 			BigDecimal divide = new BigDecimal(userGameInfo.getWinNum())
-					.divide(new BigDecimal(userGameInfo.getTotalNum()), 2, RoundingMode.HALF_UP);
+				.divide(new BigDecimal(userGameInfo.getTotalNum()), 2, RoundingMode.HALF_UP);
 			userRankVO.setWinPercent(divide);
 			UserConverter.INSTANCE.fillUserRankVo(userRankVO, userMap.get(userGameInfo.getUid()));
 
 			// 如果没有打完定位赛，则排名后移
 			if (userRankVO.getTotalNum() >= PLACEMENT_MATCH_LIMIT) {
 				list.add(userRankVO);
-			} else {
+			}
+			else {
 				placementList.add(userRankVO);
 			}
 		}
