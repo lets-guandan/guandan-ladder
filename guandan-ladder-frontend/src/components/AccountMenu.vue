@@ -1,61 +1,49 @@
+<template>
+  <t-popover placement="bottom-right" theme="light" class="abcde">
+    <template #triggerElement>
+      <div style="display: flex; align-items: center">
+        <t-avatar size="small" :image="user.avatarUrl"></t-avatar>
+        <span style="margin-left: 8px">{{ user.nickname }}</span>
+      </div>
+    </template>
+    <template #content>
+      <div class="abcde">
+        <t-cell-group class="abcde">
+          <t-cell class="a">修改密码</t-cell>
+          <t-cell class="a">退出登陆</t-cell>
+        </t-cell-group>
+      </div>
+    </template>
+  </t-popover>
+</template>
+
 <script setup lang="ts">
-import {ref} from "vue";
-import {isSuccess, userInfoApi} from "@/api";
-import {UserVO} from "@/api/types";
-import LogoutDialog from "@/components/LogoutDialog.vue";
-import UpdatePasswordDialog from "@/components/UpdatePasswordDialog.vue";
+import { ref } from 'vue'
+import { isSuccess, userInfoApi } from '@/api'
+import type { UserVO } from '@/api/types'
+import { TPopover } from 'tdesign-mobile-vue'
 
 const logoutDialog = ref()
 const updatePasswordDialog = ref()
 
 const user = ref<UserVO>({
-  uid: "",
-  username: "",
+  uid: '',
+  username: '',
   nickname: '',
-  profile: "",
-  avatarUrl: ""
+  profile: '',
+  avatarUrl: ''
 })
 
-userInfoApi().then(res => {
+userInfoApi().then((res) => {
   if (isSuccess(res)) {
     user.value = res.data
   }
 })
 </script>
 
-<template>
-  <v-menu
-    min-width="200px"
-    rounded
-  >
-    <template v-slot:activator="{ props }">
-      <v-btn size="large" v-bind="props">
-        <v-avatar>
-          <v-img
-            :src="user.avatarUrl"
-            alt="User"
-          ></v-img>
-        </v-avatar>
-        <span style="margin-left: 8px">{{ user.nickname }}</span>
-      </v-btn>
-    </template>
-    <v-list>
-      <v-list-item>
-        <v-list-item-title @click="() => updatePasswordDialog.open()">修改密码</v-list-item-title>
-      </v-list-item>
-      <v-divider />
-      <v-list-item>
-        <v-list-item-title @click="() => logoutDialog.open()">退出登陆</v-list-item-title>
-      </v-list-item>
-    </v-list>
-  </v-menu>
-
-  <update-password-dialog ref="updatePasswordDialog"/>
-  <logout-dialog ref="logoutDialog"/>
-</template>
-
-
-
 <style scoped>
-
+.a {
+  --td-cell-horizontal-padding: 0px;
+  --td-cell-vertical-padding: 8px;
+}
 </style>

@@ -1,23 +1,14 @@
-/**
- * main.ts
- *
- * Bootstraps Vuetify and other plugins then mounts the App`
- */
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-// Components
+import 'tdesign-mobile-vue/dist/reset.css'
+
 import App from './App.vue'
-
-// Composables
-import {createApp} from 'vue'
-
-// Plugins
-import {registerPlugins} from '@/plugins'
-
-// CSS
-import '@/styles/settings.scss'
+import router from './router'
 
 const app = createApp(App)
 
-registerPlugins(app)
+app.use(createPinia())
+app.use(router)
 
 app.mount('#app')

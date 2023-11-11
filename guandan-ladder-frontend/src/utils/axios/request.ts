@@ -1,8 +1,8 @@
-import type {AxiosError} from 'axios'
-import type {AlertMode, MessageInfo, RequestOptions} from '@/utils/axios/types'
-import type {ApiResult} from '@/api/types'
-import {isSuccess} from '@/api'
-import SnackbarMessage from "@/hooks/use-message";
+import type { AxiosError } from 'axios'
+import type { AlertMode, MessageInfo, RequestOptions } from '@/utils/axios/types'
+import type { ApiResult } from '@/api/types'
+import { isSuccess } from '@/api'
+import SnackbarMessage from '@/hooks/use-message'
 
 /**
  * 请求方法封装
@@ -27,7 +27,7 @@ export function doRequest<T = unknown>(
     requestOptions
   )
   request
-    .then(res => {
+    .then((res) => {
       if (finalOptions.checkSuccess!(res)) {
         alertSuccessMessage(finalOptions, res)
         finalOptions.onSuccess?.(res)
@@ -36,7 +36,7 @@ export function doRequest<T = unknown>(
         finalOptions.onFail?.(res)
       }
     })
-    .catch(e => {
+    .catch((e) => {
       alertErrorMessage(finalOptions, e)
       finalOptions.onError?.(e)
     })

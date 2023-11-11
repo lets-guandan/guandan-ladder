@@ -1,9 +1,9 @@
-import type {AxiosError, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
-import {AxiosRequestHeaders} from "axios";
+import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosRequestHeaders } from 'axios'
 
-import {HttpClient} from '@/utils/axios/http-client'
-import {useTokenStore} from "@/store/user-store";
-import router from "@/router";
+import { HttpClient } from '@/utils/axios/http-client'
+import { useTokenStore } from '@/stores/user-store'
+import router from '@/router'
 
 const onRequestFulfilled = (requestConfig: InternalAxiosRequestConfig) => {
   const headers = requestConfig.headers || {}
@@ -47,7 +47,7 @@ const onResponseRejected = (error: AxiosError) => {
         if (router.currentRoute.value.path !== '/login') {
           router.push({
             path: '/login',
-            query: {redirect: router.currentRoute.value.fullPath}
+            query: { redirect: router.currentRoute.value.fullPath }
           })
         }
         break
@@ -57,7 +57,6 @@ const onResponseRejected = (error: AxiosError) => {
   }
   return Promise.reject(error)
 }
-
 
 const httpClient = new HttpClient({
   defaultRequestConfig: {

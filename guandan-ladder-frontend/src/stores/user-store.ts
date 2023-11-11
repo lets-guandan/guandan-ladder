@@ -8,7 +8,7 @@ export const useTokenStore = defineStore('tokenStore', {
   state: () => ({
     token: useLocalStorage<string | undefined>(tokenKey, undefined, {
       writeDefaults: false
-    }),
+    })
   }),
   actions: {
     clean() {

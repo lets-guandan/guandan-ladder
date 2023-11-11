@@ -1,6 +1,6 @@
 <template>
-  <!-- 待确认战绩 -->
-  待确认战绩
+  <!-- 组队排行榜 -->
+  组队排行榜
 </template>
 
 <script setup lang="ts"></script>

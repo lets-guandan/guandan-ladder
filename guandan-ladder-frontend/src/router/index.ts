@@ -1,54 +1,44 @@
-// Composables
-import {createRouter, createWebHistory} from 'vue-router'
-import {useTokenStore} from "@/store/user-store";
-
-const routes = [
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/layouts/default/Login.vue')
-  },
-  {
-    path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
-    children: [
-      {
-        path: '',
-        name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Rank.vue'),
-      },
-      {
-        path: '/record/unconfirmed',
-        name: 'UnconfirmedRecord',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/UnconfirmedRecord.vue'),
-      },
-      {
-        path: '/record/history',
-        name: 'HistoryRecord',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/HistoryRecord.vue'),
-      },
-    ],
-  },
-]
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
-})
-
-// 路由守卫
-router.beforeEach((to, from, next) => {
-  const token = useTokenStore().token;
-  if (to.path === '/login') {
-    next()
-  } else if (!token) {
-    next('/login')
-  } else {
-    next()
-  }
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/login',
+      name: 'LoginLayout',
+      component: () => import('@/layouts/LoginLayout.vue')
+    },
+    {
+      path: '/',
+      name: 'AppLayout',
+      component: () => import('@/layouts/AppLayout.vue'),
+      children: [
+        {
+          path: '',
+          name: 'Rank',
+          // route level code-splitting
+          // this generates a separate chunk (about.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import('@/views/Rank.vue')
+        },
+        {
+          path: '/team-rank',
+          name: 'TeamRank',
+          component: () => import('@/views/TeamRank.vue')
+        },
+        {
+          path: '/record/unconfirmed',
+          name: 'UnconfirmedRecord',
+          component: () => import('@/views/UnconfirmedRecord.vue')
+        },
+        {
+          path: '/record/history',
+          name: 'HistoryRecord',
+          component: () => import('@/views/HistoryRecord.vue')
+        }
+      ]
+    }
+  ]
 })
 
 export default router

@@ -34,49 +34,46 @@ export interface PageResult<T> {
   total: number
 }
 
-
 export interface UserVO {
   /**
    * 用户id
    */
- uid: string,
+  uid: string
 
   /**
    * 用户名
    */
- username: string,
+  username: string
 
   /**
    * 昵称
    */
- nickname: string,
+  nickname: string
 
   /**
    * 个人简介
    */
- profile: string,
+  profile: string
 
   /**
    * 头像url
    */
- avatarUrl: string,
+  avatarUrl: string
 }
 
-
-export interface UserRankVO extends UserVO{
-  winNum: number,
+export interface UserRankVO extends UserVO {
+  winNum: number
   totalNum: number
 }
-
 
 /**
  * 比赛记录传输对象
  */
 export interface GameRecordDTO {
-  winUid1: string,
-  winUid2: string,
-  loseUid1: string,
-  loseUid2: string,
+  winUid1: string
+  winUid2: string
+  loseUid1: string
+  loseUid2: string
   gameTime: string
 }
 
@@ -84,7 +81,7 @@ export interface GameRecordDTO {
  * 用户登陆参数对象
  */
 export interface LoginVO {
-  userName: string,
+  userName: string
   password: string
 }
 
@@ -92,10 +89,9 @@ export interface LoginVO {
  * 修改密码参数对象
  */
 export interface UpdatePasswordVO {
-  oldPassword: string,
+  oldPassword: string
   newPassword: string
 }
-
 
 /**
  * 排行榜类型枚举
