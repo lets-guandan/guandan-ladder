@@ -20,6 +20,16 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 	int confirmRecord(@Param("uid") String uid, @Param("id") String id);
 
 	/**
+	 * 查询所有已生效战绩
+	 * @return List<GameRecord>
+	 */
+	default List<GameRecord> selectAllValidRecords() {
+		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
+				.eq(GameRecord::getUserConfirmFlagBits, 15);
+		return this.selectList(wrapper);
+	}
+
+	/**
 	 * 查询前用户的有效历史战绩
 	 * @return List<GameRecord>
 	 */
