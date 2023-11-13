@@ -1,8 +1,8 @@
 <template>
   <t-navbar title="掼蛋天梯榜" :fixed="true" style="z-index: 6000">
     <template #left>
-      <app-icon size="24px" style="margin-right: 12px" @click="showLeftDrawer" />
-      <home-icon size="24px" @click="toHome" />
+      <AdjustmentIcon size="24px" style="margin-right: 12px" @click="showLeftDrawer" />
+      <HomeIcon size="24px" @click="toHome" />
     </template>
     <template #right>
       <account-menu />
@@ -13,14 +13,17 @@
   <RouterView />
 
   <fab-add-button />
+
+  <left-drawer v-model="visible" />
 </template>
 
 <script setup lang="ts">
-import { AppIcon, HomeIcon } from 'tdesign-icons-vue-next'
+import { AdjustmentIcon, HomeIcon } from 'tdesign-icons-vue-next'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import AccountMenu from '@/components/AccountMenu.vue'
 import FabAddButton from '@/components/FabAddButton.vue'
+import LeftDrawer from '@/components/LeftDrawer.vue'
 
 const visible = ref(false)
 

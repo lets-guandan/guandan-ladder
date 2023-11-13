@@ -15,6 +15,14 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useVModel } from '@vueuse/core/index'
+
+const props = defineProps<{
+  modelValue: string
+}>()
+const emit = defineEmits(['update:modelValue'])
+
+const visible = useVModel(props, 'modelValue', emit)
 
 const router = useRouter()
 function jumpToPage(path: string) {
