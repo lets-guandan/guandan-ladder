@@ -22,6 +22,11 @@ const router = createRouter({
           component: () => import('@/views/SoloRank.vue')
         },
         {
+          path: '/record-report',
+          name: 'RecordReport',
+          component: () => import('@/views/RecordReport.vue')
+        },
+        {
           path: '/team-rank',
           name: 'TeamRank',
           component: () => import('@/views/TeamRank.vue')
