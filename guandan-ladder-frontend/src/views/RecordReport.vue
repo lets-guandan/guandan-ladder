@@ -45,7 +45,7 @@ import DateTimePicker from '@/components/DateTimePicker.vue'
 import UserPicker from '@/components/UserPicker.vue'
 import { isSuccess, listUserApi, reportGameRecordApi } from '@/api'
 import { PickerColumnItem } from 'tdesign-mobile-vue/lib/picker/type'
-import { Message } from 'tdesign-mobile-vue'
+import { showMessage } from '@/utils/message'
 
 const form = ref(null)
 
@@ -61,19 +61,6 @@ const users = ref<PickerColumnItem[]>([])
 listUserApi().then((res) => {
   users.value = res.data.map((x) => ({ label: x.nickname, value: x.uid }))
 })
-
-const showMessage = (theme: string, content = '这是一条普通通知信息', duration = 5000) => {
-  if (Message[theme]) {
-    Message[theme]({
-      offset: [60, 100],
-      content,
-      duration,
-      icon: true,
-      zIndex: 20000,
-      context: document.querySelector('.title')
-    })
-  }
-}
 
 const onSubmit = (e: any) => {
   if (e.validateResult === true) {

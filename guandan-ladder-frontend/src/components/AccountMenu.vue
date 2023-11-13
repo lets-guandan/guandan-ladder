@@ -95,6 +95,7 @@ import { useTokenStore } from '@/stores/user-store'
 import { useRouter } from 'vue-router'
 import { BrowseOffIcon } from 'tdesign-icons-vue-next'
 import type { FormInstanceFunctions } from 'tdesign-mobile-vue/es/form'
+import { showMessage } from '@/utils/message'
 
 const logoutDialog = ref(false)
 const updatePasswordDialog = ref(false)
@@ -148,13 +149,13 @@ function updatePassword() {
       if (isSuccess(res)) {
         form.value.reset()
         updatePasswordDialog.value = false
-        alert('修改密码成功！')
+        showMessage('success', '修改密码成功！')
       } else {
-        alert('修改失败咯.' + res.message)
+        showMessage('error', '修改密码失败：' + res.message)
       }
     })
     .catch((e) => {
-      alert('修改失败咯!' + e.message)
+      showMessage('error', '修改密码失败：' + e.message)
     })
 }
 
