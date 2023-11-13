@@ -55,6 +55,6 @@ export function myHistoryGameRecordApi() {
 }
 
 /** 修改密码 */
-export function updatePassword(updatePasswordVO: UpdatePasswordVO) {
+export function updatePasswordApi(updatePasswordVO: UpdatePasswordVO) {
   return httpClient.post<ApiResult>('/user/updatePassword', updatePasswordVO)
 }

@@ -91,6 +91,7 @@ export interface LoginVO {
 export interface UpdatePasswordVO {
   oldPassword: string
   newPassword: string
+  confirmPassword: string
 }
 
 /**

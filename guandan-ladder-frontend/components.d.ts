@@ -20,6 +20,7 @@ declare module 'vue' {
     TCell: typeof import('tdesign-mobile-vue')['Cell']
     TCellGroup: typeof import('tdesign-mobile-vue')['CellGroup']
     TDateTimePicker: typeof import('tdesign-mobile-vue')['DateTimePicker']
+    TDialog: typeof import('tdesign-mobile-vue')['Dialog']
     Test: typeof import('./src/components/Test.vue')['default']
     TFab: typeof import('tdesign-mobile-vue')['Fab']
     TForm: typeof import('tdesign-mobile-vue')['Form']
