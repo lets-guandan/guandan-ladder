@@ -50,4 +50,9 @@ public class UserRankVO {
 	 */
 	private BigDecimal winPercent;
 
+	/**
+	 * 排行
+	 */
+	private Integer rank;
+
 }

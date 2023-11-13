@@ -25,7 +25,7 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 	 */
 	default List<GameRecord> selectAllValidRecords() {
 		LambdaQueryWrapper<GameRecord> wrapper = Wrappers.lambdaQuery(GameRecord.class)
-				.eq(GameRecord::getUserConfirmFlagBits, 15);
+			.eq(GameRecord::getUserConfirmFlagBits, 15);
 		return this.selectList(wrapper);
 	}
 

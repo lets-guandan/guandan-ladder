@@ -13,8 +13,8 @@
     </t-tabs>
     <t-list>
       <t-cell
-        v-for="(item, index) in data"
-        :key="item.uid"
+        v-for="item in data"
+        :key="item"
         :title="item.nickname"
         :description="item.profile"
         align="middle"
@@ -22,8 +22,8 @@
       >
         <template #leftIcon>
           <div style="display: flex; align-items: center">
-            <span :class="['rank-num', index <= 2 ? 'top3' : '']">
-              {{ index + 1 }}
+            <span :class="['rank-num', item.rank <= 3 ? 'top3' : '']">
+              {{ item.rank }}
             </span>
             <t-avatar shape="circle" :image="item.avatarUrl" />
           </div>

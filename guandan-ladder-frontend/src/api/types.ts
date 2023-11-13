@@ -64,6 +64,7 @@ export interface UserVO {
 export interface UserRankVO extends UserVO {
   winNum: number
   totalNum: number
+  rank: number
 }
 
 /**

@@ -81,14 +81,16 @@ public class RankService {
 		List<GameRecord> gameRecords = gameRecordMapper.selectAllValidRecords();
 
 		Map<String, UserTeamRankVO> rankMap = new HashMap<>(16);
-		for (GameRecord record : gameRecords) {
+		for (GameRecord gameRecord : gameRecords) {
 			// 统计胜者
-			UserTeamRankVO winTeamRankVO = this.fillUserTeamRankVO(record.getWinUid1(), record.getWinUid2(), rankMap);
+			UserTeamRankVO winTeamRankVO = this.fillUserTeamRankVO(gameRecord.getWinUid1(), gameRecord.getWinUid2(),
+					rankMap);
 			winTeamRankVO.incrWinNum();
 			winTeamRankVO.incrTotalNum();
 
 			// 统计负者
-			UserTeamRankVO loseTeamRankVO = this.fillUserTeamRankVO(record.getLoseUid1(), record.getLoseUid2(), rankMap);
+			UserTeamRankVO loseTeamRankVO = this.fillUserTeamRankVO(gameRecord.getLoseUid1(), gameRecord.getLoseUid2(),
+					rankMap);
 			loseTeamRankVO.incrTotalNum();
 		}
 
@@ -96,20 +98,27 @@ public class RankService {
 		List<UserTeamRankVO> userTeamRankVOS;
 		switch (rankListTypeEnum) {
 			case WIN_TEAM_COUNT:
-				userTeamRankVOS = rankMap.values().stream()
-						.filter(v -> PLACEMENT_MATCH_TEAM_LIMIT <= v.getTotalNum())
-						.sorted(Comparator.comparing(UserTeamRankVO::getWinNum).reversed()).collect(Collectors.toList());
+				userTeamRankVOS = rankMap.values()
+					.stream()
+					.filter(v -> PLACEMENT_MATCH_TEAM_LIMIT <= v.getTotalNum())
+					.sorted(Comparator.comparing(UserTeamRankVO::getWinNum).reversed())
+					.collect(Collectors.toList());
 				break;
 			case WIN_TEAM_RATE:
-				userTeamRankVOS = rankMap.values().stream()
-						.filter(v -> PLACEMENT_MATCH_TEAM_LIMIT <= v.getTotalNum())
-						.sorted(Comparator.comparing(UserTeamRankVO::getWinPercent).reversed()).collect(Collectors.toList());
+				userTeamRankVOS = rankMap.values()
+					.stream()
+					.filter(v -> PLACEMENT_MATCH_TEAM_LIMIT <= v.getTotalNum())
+					.sorted(Comparator.comparing(UserTeamRankVO::getWinPercent).reversed())
+					.collect(Collectors.toList());
 				break;
 			default:
 				throw new BusinessException(SystemResultCode.BAD_REQUEST.getCode(), "错误的排行类型");
 		}
 
-		userTeamRankVOS.addAll(rankMap.values().stream().filter(v -> PLACEMENT_MATCH_TEAM_LIMIT > v.getTotalNum()).collect(Collectors.toList()));
+		userTeamRankVOS.addAll(rankMap.values()
+			.stream()
+			.filter(v -> PLACEMENT_MATCH_TEAM_LIMIT > v.getTotalNum())
+			.collect(Collectors.toList()));
 		return userTeamRankVOS;
 	}
 
@@ -119,6 +128,7 @@ public class RankService {
 	private static List<UserRankVO> getRankList(List<UserGameInfo> userGameInfoList, Map<String, User> userMap) {
 		List<UserRankVO> list = new ArrayList<>();
 		List<UserRankVO> placementList = new ArrayList<>();
+
 		for (UserGameInfo userGameInfo : userGameInfoList) {
 			UserRankVO userRankVO = new UserRankVO();
 			userRankVO.setUid(userGameInfo.getUid());
@@ -138,11 +148,17 @@ public class RankService {
 				placementList.add(userRankVO);
 			}
 		}
+
 		// 添加定位赛数据
 		list.addAll(placementList);
+
+		// 填充最终排名
+		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setRank(i + 1);
+		}
+
 		return list;
 	}
-
 
 	private UserTeamRankVO fillUserTeamRankVO(String uid1, String uid2, Map<String, UserTeamRankVO> rankMap) {
 		String uidL = uid1 + uid2;

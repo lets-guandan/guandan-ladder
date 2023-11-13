@@ -19,6 +19,7 @@ public enum RankListTypeEnum {
 	WIN_TEAM_RATE(4, "组队胜率榜"),
 
 	;
+
 	private final Integer value;
 
 	private final String desc;
