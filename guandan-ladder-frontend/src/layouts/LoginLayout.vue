@@ -31,6 +31,10 @@
       </t-button>
     </t-form>
   </div>
+
+  <div>
+    <a href="https://beian.miit.gov.cn" target="_blank">皖ICP备‪19023656‬号-1</a>
+  </div>
 </template>
 
 <script lang="ts" setup>
