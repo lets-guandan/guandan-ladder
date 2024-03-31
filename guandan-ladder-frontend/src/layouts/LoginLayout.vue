@@ -34,7 +34,7 @@
     </t-button>
 
     <div class="login-footer">
-      <a href="https://beian.miit.gov.cn" target="_blank">皖ICP备‪19023656‬号-1</a>
+      <a href="https://beian.miit.gov.cn" target="_blank">皖ICP备2023010551号-2</a>
     </div>
   </div>
 </template>
