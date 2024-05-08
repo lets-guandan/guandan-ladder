@@ -66,7 +66,7 @@ public interface GameRecordMapper extends BaseMapper<GameRecord> {
 				.eq(GameRecord::getLoseUid1, uid)
 				.or()
 				.eq(GameRecord::getLoseUid2, uid))
-			.orderByDesc(GameRecord::getGameTime);
+			.orderByAsc(GameRecord::getGameTime);
 		return this.selectList(wrapper);
 	}
 
