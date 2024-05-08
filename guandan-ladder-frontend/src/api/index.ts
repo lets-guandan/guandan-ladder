@@ -1,5 +1,5 @@
 import type { ApiResult, LoginVO } from '@/api/types'
-import type { GameRecordDTO, UpdatePasswordVO, UserRankVO, UserVO } from '@/api/types'
+import type { GameRecordDTO, UpdatePasswordVO, UserRankVO, UserVO, GameRecordVO } from '@/api/types'
 import httpClient from '@/utils/axios'
 
 export const isSuccess = (result: ApiResult) => {
@@ -34,7 +34,7 @@ export function reportGameRecordApi(gameRecord: GameRecordDTO) {
 
 /** 获取待确认战局记录 */
 export function getUnconfirmedRecordApi(myOrAll: number) {
-  return httpClient.get<ApiResult>('/game/record/unconfirmed', {
+  return httpClient.get<ApiResult<GameRecordVO[]>>('/game/record/unconfirmed', {
     params: { myOrAll: myOrAll }
   })
 }
