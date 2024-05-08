@@ -79,6 +79,28 @@ export interface GameRecordDTO {
 }
 
 /**
+ * 待确认战绩对象
+ */
+export interface GameRecordVO {
+    id: bigint
+    winUid1: string
+    winUid1Flag: string
+    winNickname1: string
+    winUid2: string
+    winUid2Flag:string
+    winNickname2:string
+    loseUid1: string
+    loseUid1Flag:string
+    loseNickname1: string
+    loseUid2: string
+    loseUid2Flag: string
+    loseNickname2: string
+    gameTime: object
+    userConfirmFlag: string
+    userConfirmFlagBits: number
+}
+
+/**
  * 用户登陆参数对象
  */
 export interface LoginVO {
@@ -103,4 +125,14 @@ export enum RankListTypeEnum {
   WIN_COUNT = 1,
   // 胜率榜
   WIN_RATE = 2
+}
+
+/**
+* 待确认战绩类型枚举
+*/
+export enum ConfirmListTypeEnum {
+    // 待我确认列表
+    WAIT_MY_CONFIRM_LIST = 1,
+    // 待其他人确认的战绩列表
+    WAIT_OTHER_CONFIRM_LIST = 2
 }
