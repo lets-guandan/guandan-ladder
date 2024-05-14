@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "unconfirmedRecordStyle"; /* Project id 4543720 */
+  src: url('iconfont.woff2?t=1715566197438') format('woff2'),
+       url('iconfont.woff?t=1715566197438') format('woff'),
+       url('iconfont.ttf?t=1715566197438') format('truetype');
+}
+
+.unconfirmedRecordStyle {
+  font-family: "unconfirmedRecordStyle" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*.icon-shengli:before {*/
+/*  content: "\e609";*/
+/*}*/
+
+/*.icon-icon_shibai:before {*/
+/*  content: "\e627";*/
+/*}*/
+

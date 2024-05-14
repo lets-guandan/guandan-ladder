@@ -15,30 +15,44 @@
       <t-cell
         v-for="item in data"
         :key="item"
-        :title="'编号' + item.id + '战绩确认'"
+        :title="''"
         align="left"
         :bordered="true"
       >
         <div>
-          <span class="cell" style="float: right;">
+          <span class="cell win-content" style="float: left;" >
             {{ item.winNickname1 }}
-            <t-switch style="display: inline-block;" :default-value="item.winUid1Flag == '1'"
-                      disabled :icon="icons" />
           </span>
-          <span class="cell" style="float: right;">
+          <span class="switch-content">
+              <t-switch style="display: inline-block;" :default-value="item.winUid1Flag == '1'"
+                        disabled :icon="icons" />
+          </span>
+          <br/>
+
+          <span class="cell win-content" style="float: left;">
             {{ item.winNickname2 }}
-            <t-switch style="display: inline-block;" :default-value="item.winUid2Flag == '1'"
-                      disabled :icon="icons" />
           </span>
-          <span class="cell" style="float: right;">
+          <span class="switch-content">
+              <t-switch style="display: inline-block;" :default-value="item.winUid2Flag == '1'"
+                        disabled :icon="icons" />
+          </span>
+          <br/>
+
+          <span class="cell loser-content" style="float: left;">
             {{ item.loseNickname1 }}
-            <t-switch style="display: inline-block;" :default-value="item.loseUid1Flag == '1'"
-                      disabled :icon="icons" />
           </span>
-          <span class="cell" style="float: right;">
+          <span class="switch-content">
+              <t-switch style="display: inline-block;" :default-value="item.loseUid1Flag == '1'"
+                        disabled :icon="icons" />
+          </span>
+          <br/>
+
+          <span class="cell loser-content" style="float: left;">
             {{ item.loseNickname2 }}
-            <t-switch style="display: inline-block;" :default-value="item.loseUid2Flag == '1'"
-                      disabled :icon="icons" />
+          </span>
+          <span class="switch-content">
+              <t-switch style="display: inline-block;" :default-value="item.loseUid2Flag == '1'"
+                        disabled :icon="icons" />
           </span>
         </div>
 
@@ -100,5 +114,50 @@ fetchConfirmList(ConfirmListTypeEnum.WAIT_MY_CONFIRM_LIST)
 </script>
 
 <style scoped>
+@import "@/style/unconfirmedRecord/iconfont.css";
 
+.win-content {
+  font-family: "unconfirmedRecordStyle";
+  position: relative;
+  display: inline-block; /* 确保span有宽度，以便定位角标 */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 110px;
+}
+
+.win-content::after {
+  content: '\e609'; /* 角标的内容 */
+  position: absolute;
+  top: -0.04%; /* 调整数字为负值，让角标向上偏移 */
+  left: -20%; /* 调整数字为负值，让角标向左偏移 */
+  font-size: larger; /* 可选，减小角标的字体大小 */
+  color: green;
+}
+
+.loser-content {
+  font-family: "unconfirmedRecordStyle";
+  position: relative;
+  display: inline-block; /* 确保span有宽度，以便定位角标 */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 110px;
+}
+
+.loser-content::after {
+  content: '\e627'; /* 角标的内容 */
+  position: absolute;
+  top: -0.04%; /* 调整数字为负值，让角标向上偏移 */
+  left: -30%; /* 调整数字为负值，让角标向左偏移 */
+  font-size: larger; /* 可选，减小角标的字体大小 */
+  color: red;
+}
+
+
+.switch-content {
+  position: relative;
+  display: inline-block; /* 确保span有宽度，以便定位角标 */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 3px;
+}
 </style>
