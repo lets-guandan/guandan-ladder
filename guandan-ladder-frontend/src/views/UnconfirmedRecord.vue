@@ -27,7 +27,6 @@
               <t-switch style="display: inline-block;" :default-value="item.winUid1Flag == '1'"
                         disabled :icon="icons" />
           </span>
-          <br/>
 
           <span class="cell win-content" style="float: left;">
             {{ item.winNickname2 }}
@@ -45,7 +44,6 @@
               <t-switch style="display: inline-block;" :default-value="item.loseUid1Flag == '1'"
                         disabled :icon="icons" />
           </span>
-          <br/>
 
           <span class="cell loser-content" style="float: left;">
             {{ item.loseNickname2 }}
@@ -55,11 +53,11 @@
                         disabled :icon="icons" />
           </span>
         </div>
-
         <div>
-          <t-button v-if="tab=== ConfirmListTypeEnum.WAIT_MY_CONFIRM_LIST" size="extra-small" theme="primary" block @click="ConfirmRecord(item.id)">
-            确认战绩
-          </t-button>
+          <t-button v-if="tab=== ConfirmListTypeEnum.WAIT_MY_CONFIRM_LIST"
+                    size="extra-small" theme="primary"
+                    block @click="ConfirmRecord(item.id)"
+                    content="确认战绩"/>
         </div>
       </t-cell>
     </t-list>
