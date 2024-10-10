@@ -144,7 +144,7 @@ fetchConfirmList(ConfirmListTypeEnum.WAIT_MY_CONFIRM_LIST)
 }
 
 .loser-content::after {
-  content: '\e627'; /* 角标的内容 */
+  content: '\e60a'; /* 角标的内容 */
   position: absolute;
   top: -0.04%; /* 调整数字为负值，让角标向上偏移 */
   left: -30%; /* 调整数字为负值，让角标向左偏移 */
