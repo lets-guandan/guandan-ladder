@@ -52,12 +52,14 @@
               <t-switch style="display: inline-block;" :default-value="item.loseUid2Flag == '1'"
                         disabled :icon="icons" />
           </span>
-        </div>
-        <div>
+          <br/>
+          <span style="float: right;">
           <t-button v-if="tab=== ConfirmListTypeEnum.WAIT_MY_CONFIRM_LIST"
                     size="extra-small" theme="primary"
+                    style="width: 100%;"
                     block @click="ConfirmRecord(item.id)"
                     content="确认战绩"/>
+          </span>
         </div>
       </t-cell>
     </t-list>
